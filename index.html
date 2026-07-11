@@ -1,0 +1,1309 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Crystal Ville — Survival SMP</title>
+
+<!-- SEO: description & keywords -->
+<meta name="description" content="Crystal Ville is a close-knit Minecraft Survival SMP with player-run economy and towns. Join our whitelisted community for towns, trading, and long-term survival worlds.">
+<meta name="keywords" content="Minecraft server, Minecraft SMP, survival SMP, Minecraft survival server, player-run economy, Minecraft towns, whitelisted SMP, Java Edition server, Bedrock Edition server, Crystal Ville">
+<meta name="robots" content="index, follow">
+<meta name="author" content="Divyansh Sharma">
+<link rel="canonical" href="https://crystalville.netlify.app/">
+
+<!-- Open Graph / social sharing -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="Crystal Ville — Survival SMP">
+<meta property="og:description" content="A close-knit Minecraft Survival SMP with player-run economy and towns. Java + Bedrock, whitelisted, and built for long-term worlds.">
+<meta property="og:image" content="https://crystalville.netlify.app/og-image.png">
+<meta property="og:url" content="https://crystalville.netlify.app/">
+<meta property="og:site_name" content="Crystal Ville">
+<meta property="og:locale" content="en_US">
+
+<!-- Twitter card -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Crystal Ville — Survival SMP">
+<meta name="twitter:description" content="A close-knit Minecraft Survival SMP with player-run economy and towns.">
+<meta name="twitter:image" content="https://crystalville.netlify.app/og-image.png">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;600;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  /* ============================================================
+     TOKENS
+     Color   — ink (bg), violet/violet-2 (panels), amethyst (primary
+               accent), diamond (secondary accent), citrine (CTA),
+               bone/bone-dim (text)
+     Type    — Unbounded (display), Inter (body/UI), JetBrains Mono
+               (server data: IP, status, codes)
+     Layout  — split hero (copy left, light-reactive crystal cluster
+               right), single page with anchor-linked sections
+     Signature — the crystal cluster in the hero refracts toward the
+               cursor; same facet language echoes in card corners
+     ============================================================ */
+  :root{
+    --ink:        #120F1F;
+    --ink-soft:   #181229;
+    --panel:      #1C1530;
+    --panel-2:    #251B3D;
+    --line:       #34294f;
+    --amethyst:   #9D6BFF;
+    --amethyst-d: #7245d6;
+    --diamond:    #59E8D2;
+    --citrine:    #F4C04E;
+    --bone:       #F5F1FB;
+    --bone-dim:   #BDB3D6;
+    --danger:     #FF8FA3;
+
+    --display: "Unbounded", "Arial Black", sans-serif;
+    --body: "Inter", system-ui, -apple-system, sans-serif;
+    --mono: "JetBrains Mono", "Courier New", monospace;
+
+    --max: 1120px;
+    --radius: 14px;
+  }
+
+  *{ box-sizing: border-box; }
+  html{ scroll-behavior: smooth; }
+  @media (prefers-reduced-motion: reduce){
+    html{ scroll-behavior: auto; }
+    *{ animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; transition-duration: 0.001ms !important; }
+  }
+
+  body{
+    margin:0;
+    background: var(--ink);
+    color: var(--bone);
+    font-family: var(--body);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1,h2,h3{ font-family: var(--display); margin: 0; letter-spacing: 0.01em; }
+  p{ margin: 0; }
+  a{ color: inherit; text-decoration: none; }
+  ul, ol{ margin:0; padding:0; }
+
+  :focus-visible{
+    outline: 2px solid var(--diamond);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+
+  .wrap{ max-width: var(--max); margin: 0 auto; padding: 0 24px; }
+  .eyebrow{
+    font-family: var(--mono);
+    font-size: 0.78rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--diamond);
+  }
+
+  /* ---------- NAV ---------- */
+  .topnav{
+    position: sticky; top:0; z-index: 50;
+    background: rgba(18,15,31,0.82);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--line);
+  }
+  .topnav-inner{
+    max-width: var(--max); margin: 0 auto; padding: 14px 24px;
+    display:flex; align-items:center; justify-content:space-between;
+  }
+  .brand{
+    display:flex; align-items:center; gap:10px;
+    font-family: var(--display); font-weight: 700; font-size: 1.05rem;
+    letter-spacing: 0.02em;
+  }
+  .brand-mark{
+    width: 16px; height: 16px;
+    background: linear-gradient(135deg, var(--diamond), var(--amethyst));
+    clip-path: polygon(50% 0%, 100% 38%, 80% 100%, 20% 100%, 0% 38%);
+    flex: none;
+  }
+  .nav-links{
+    display:flex; gap: 28px; align-items:center;
+  }
+  .nav-links a{
+    font-size: 0.92rem; font-weight: 500; color: var(--bone-dim);
+    padding: 6px 2px; border-bottom: 2px solid transparent;
+    transition: color 0.15s, border-color 0.15s;
+  }
+  .nav-links a:hover, .nav-links a.active{
+    color: var(--bone); border-color: var(--diamond);
+  }
+  .nav-links a.cta-link{
+    background: var(--amethyst); color: #100B1F; padding: 8px 16px;
+    border-radius: 999px; border-bottom: none; font-weight: 600;
+  }
+  .nav-links a.cta-link:hover{ background: var(--amethyst-d); color: var(--bone); }
+
+  .nav-toggle{
+    display:none; background: none; border: 1px solid var(--line);
+    border-radius: 8px; width: 40px; height: 36px; cursor:pointer;
+    position: relative;
+  }
+  .nav-toggle span, .nav-toggle::before, .nav-toggle::after{
+    content:""; position:absolute; left: 9px; right: 9px; height: 2px;
+    background: var(--bone); transition: transform 0.2s, opacity 0.2s;
+  }
+  .nav-toggle::before{ top: 12px; }
+  .nav-toggle span{ top: 17px; }
+  .nav-toggle::after{ top: 22px; }
+  .nav-toggle.open::before{ transform: translateY(5px) rotate(45deg); }
+  .nav-toggle.open::after{ transform: translateY(-5px) rotate(-45deg); }
+  .nav-toggle.open span{ opacity: 0; }
+
+  /* ---------- HERO ---------- */
+  .hero{
+    position: relative; overflow: hidden;
+    padding: 88px 0 96px;
+    border-bottom: 1px solid var(--line);
+  }
+  .hero-inner{
+    max-width: var(--max); margin: 0 auto; padding: 0 24px;
+    display:grid; grid-template-columns: 1.1fr 0.9fr; gap: 32px; align-items:center;
+    position: relative; z-index: 2;
+  }
+  .hero h1{
+    font-size: clamp(2.4rem, 5vw, 3.6rem);
+    margin: 10px 0 16px;
+    color: var(--bone);
+  }
+  .hero h1 em{
+    font-style: normal; color: transparent;
+    background: linear-gradient(120deg, var(--diamond), var(--amethyst));
+    -webkit-background-clip: text; background-clip: text;
+  }
+  .tagline{ color: var(--bone-dim); font-size: 1.08rem; max-width: 480px; }
+
+  .server-info{
+    margin-top: 28px; display:flex; flex-wrap:wrap; align-items:center; gap: 12px;
+  }
+  .ip-pill{
+    display:flex; align-items:center; gap:10px;
+    background: var(--panel); border: 1px solid var(--line);
+    border-radius: 999px; padding: 8px 8px 8px 16px;
+  }
+  .ip-pill code{ font-family: var(--mono); font-size: 0.95rem; color: var(--bone); }
+  .copy-btn{
+    font-family: var(--mono); font-size: 0.78rem; font-weight: 600;
+    background: var(--panel-2); color: var(--diamond); border: none;
+    padding: 7px 12px; border-radius: 999px; cursor: pointer;
+    transition: background 0.15s;
+  }
+  .copy-btn:hover{ background: var(--amethyst); color: #100B1F; }
+  .status{
+    font-family: var(--mono); font-size: 0.82rem; color: var(--bone-dim);
+    display:flex; align-items:center; gap:7px;
+  }
+  .dot{ width:8px; height:8px; border-radius:50%; background: var(--diamond); box-shadow: 0 0 8px var(--diamond); }
+
+  /* ---------- ADMIN-ONLY IP/PORT EDIT ---------- */
+  .edit-btn{
+    display:flex; align-items:center; justify-content:center;
+    width: 30px; height: 30px; border-radius: 50%;
+    background: transparent; border: 1px solid var(--line); color: var(--bone-dim);
+    cursor: pointer; transition: border-color 0.15s, color 0.15s;
+    flex: none;
+  }
+  .edit-btn:hover{ border-color: var(--diamond); color: var(--diamond); }
+  .edit-btn svg{ width:14px; height:14px; }
+
+  .ip-edit-fields{ display:grid; gap:10px; background: var(--panel-2); border: 1px solid var(--line); border-radius: 12px; padding: 16px; width: 100%; max-width: 340px; }
+  .ip-edit-fields .edit-row{ display:grid; gap:4px; }
+  .ip-edit-fields .edit-row label{ font-family: var(--mono); font-size: 0.72rem; color: var(--bone-dim); text-transform: uppercase; letter-spacing: 0.06em; }
+  .ip-edit-fields input{
+    background: var(--ink); border: 1px solid var(--diamond); border-radius: 6px;
+    color: var(--bone); font-family: var(--mono); font-size: 0.88rem;
+    padding: 8px 10px; width: 100%;
+  }
+  .ip-edit-fields .edit-actions{ display:flex; gap:8px; margin-top:4px; }
+  .ip-edit-fields .save-btn, .ip-edit-fields .cancel-btn{
+    font-family: var(--mono); font-size: 0.75rem; font-weight: 600;
+    border: none; border-radius: 999px; padding: 7px 14px; cursor: pointer;
+  }
+  .ip-edit-fields .save-btn{ background: var(--diamond); color: #072a26; }
+  .ip-edit-fields .cancel-btn{ background: var(--panel); color: var(--bone-dim); }
+
+  .ip-label{ font-family: var(--mono); font-size: 0.78rem; color: var(--bone-dim); }
+
+  .admin-modal-backdrop{
+    position: fixed; inset:0; z-index: 200;
+    background: rgba(9,7,17,0.72); backdrop-filter: blur(3px);
+    display:flex; align-items:center; justify-content:center; padding: 20px;
+  }
+  .admin-modal-backdrop[hidden]{ display:none !important; }
+  .admin-modal{
+    background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius);
+    padding: 26px; width: 100%; max-width: 340px;
+  }
+  .admin-modal h3{ font-size: 1rem; margin-bottom: 6px; color: var(--bone); }
+  .admin-modal p{ color: var(--bone-dim); font-size: 0.85rem; margin-bottom: 16px; }
+  .admin-modal input{
+    width: 100%; background: var(--ink); border: 1px solid var(--line); border-radius: 8px;
+    padding: 11px 13px; color: var(--bone); font-family: var(--body); font-size: 0.92rem;
+    margin-bottom: 8px;
+  }
+  .admin-modal input:focus{ border-color: var(--diamond); }
+  .admin-modal .admin-err{ color: var(--danger); font-size: 0.8rem; min-height: 1em; margin-bottom: 10px; }
+  .admin-modal .actions{ display:flex; gap: 10px; }
+
+  .cta-row{ margin-top: 30px; display:flex; flex-wrap:wrap; gap: 14px; }
+  .btn{
+    font-family: var(--body); font-weight: 600; font-size: 0.95rem;
+    padding: 13px 24px; border-radius: 10px; display:inline-block;
+    transition: transform 0.15s, background 0.15s, border-color 0.15s;
+  }
+  .btn:hover{ transform: translateY(-2px); }
+  .btn-primary{ background: var(--citrine); color: #1d1505; }
+  .btn-primary:hover{ background: #ffd066; }
+  .btn-ghost{ border: 1px solid var(--line); color: var(--bone); }
+  .btn-ghost:hover{ border-color: var(--diamond); }
+
+  /* crystal cluster */
+  .facet-stage{
+    position: relative; height: 360px; z-index: 1;
+  }
+  .facet{
+    position:absolute; mix-blend-mode: screen; opacity: 0.9;
+    background: radial-gradient(circle at var(--gx,50%) var(--gy,40%), var(--c1), var(--c2) 62%);
+    transition: background-position 0.05s linear;
+  }
+  .f1{ width:62%; height:78%; top:6%; left:18%; clip-path: polygon(50% 0%, 92% 30%, 78% 100%, 22% 100%, 6% 30%); --c1:var(--diamond); --c2:var(--amethyst); }
+  .f2{ width:40%; height:50%; top:0%; left:46%; clip-path: polygon(50% 0%, 100% 60%, 70% 100%, 0% 70%); --c1:var(--amethyst); --c2:var(--panel); opacity:0.75; filter: blur(0.3px); }
+  .f3{ width:34%; height:42%; top:48%; left:6%; clip-path: polygon(30% 0%, 100% 18%, 80% 100%, 0% 80%); --c1:var(--citrine); --c2:var(--amethyst-d); opacity:0.55; }
+  .f4{ width:26%; height:30%; top:62%; left:58%; clip-path: polygon(50% 0%, 100% 100%, 0% 100%); --c1:var(--diamond); --c2:var(--panel-2); opacity:0.6; }
+  .hero-glow{
+    position:absolute; inset:0; z-index:0;
+    background: radial-gradient(circle at 78% 35%, rgba(157,107,255,0.18), transparent 55%);
+  }
+
+  /* ---------- MINECRAFT-FRIENDLY BACKDROP ---------- */
+  /* Whole-page blocky/voxel texture, kept subtle so it sits behind the crystal
+     theme instead of competing with it. Built from CSS gradients + plain
+     divs only — no Mojang textures used, so there's nothing to swap out later. */
+  body{
+    background-color: var(--ink);
+    background-image:
+      linear-gradient(rgba(157,107,255,0.05) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(157,107,255,0.05) 1px, transparent 1px);
+    background-size: 32px 32px;
+    background-attachment: fixed;
+  }
+  .voxels{
+    position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden;
+  }
+  .voxel{
+    position: absolute; bottom: -40px;
+    box-shadow:
+      inset -4px -4px 0 rgba(0,0,0,0.25),
+      inset 4px 4px 0 rgba(255,255,255,0.08);
+    animation: voxel-rise linear infinite;
+    opacity: 0.5;
+  }
+  .voxel.grass{ background: #6a8f3d; }
+  .voxel.dirt{ background: #7a5233; }
+  .voxel.stone{ background: #7a7a82; }
+  .voxel.amethyst{ background: var(--amethyst-d); }
+  @keyframes voxel-rise{
+    0%{ transform: translateY(0) rotate(0deg); opacity: 0; }
+    10%{ opacity: 0.5; }
+    90%{ opacity: 0.35; }
+    100%{ transform: translateY(-110vh) rotate(90deg); opacity: 0; }
+  }
+  @media (prefers-reduced-motion: reduce){
+    .voxel{ animation: none; display: none; }
+  }
+  /* content sits above the backdrop */
+  .topnav, .hero, .section, footer{ position: relative; z-index: 1; }
+
+  @media (prefers-reduced-motion: reduce){
+    .facet{ transition: none; }
+  }
+
+  /* ---------- SECTIONS ---------- */
+  .section{ padding: 86px 0; border-bottom: 1px solid var(--line); }
+  .section.alt{ background: var(--ink-soft); }
+  .section-head{ max-width: 620px; margin-bottom: 44px; }
+  .section-head h2{ font-size: clamp(1.7rem, 3vw, 2.2rem); margin-top: 8px; }
+  .section-head p{ color: var(--bone-dim); margin-top: 12px; }
+
+  .feature-grid, .join-grid{
+    display:grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px;
+  }
+  .card{
+    background: var(--panel); border: 1px solid var(--line);
+    border-radius: var(--radius); padding: 26px 22px; position: relative;
+  }
+  .card::before{
+    content:""; position:absolute; top:0; left:22px; width:18px; height:6px;
+    background: linear-gradient(90deg, var(--diamond), var(--amethyst));
+    border-radius: 0 0 4px 4px;
+  }
+  .card h3{ font-size: 1.05rem; margin-bottom: 8px; color: var(--bone); }
+  .card p{ color: var(--bone-dim); font-size: 0.93rem; }
+
+  .rules-list{
+    display:grid; gap: 14px; max-width: 760px;
+  }
+  .rules-list li{
+    list-style: none;
+    padding: 16px 20px;
+    background: var(--panel); border: 1px solid var(--line); border-radius: 10px;
+    color: var(--bone-dim);
+  }
+  .rules-list strong{ color: var(--bone); }
+  .rules-intro{
+    max-width: 760px; color: var(--bone-dim); margin-bottom: 24px; line-height: 1.75;
+  }
+
+  .join-card .step{
+    font-family: var(--mono); color: var(--citrine); font-size: 0.8rem; margin-bottom: 6px; display:block;
+  }
+
+  /* ---------- BAN APPEAL ---------- */
+  .appeal-section .section-head p{ color: var(--bone-dim); }
+  .appeal-layout{
+    display:grid; grid-template-columns: 1fr 1.3fr; gap: 36px; align-items:start;
+  }
+  .appeal-notes{
+    background: var(--panel-2); border: 1px solid var(--line);
+    border-radius: var(--radius); padding: 24px;
+  }
+  .appeal-notes h3{ font-size: 1rem; margin-bottom: 12px; }
+  .appeal-notes ul{ display:grid; gap: 10px; }
+  .appeal-notes li{
+    list-style:none; color: var(--bone-dim); font-size: 0.9rem;
+    padding-left: 18px; position:relative;
+  }
+  .appeal-notes li::before{
+    content:""; position:absolute; left:0; top:8px; width:7px; height:7px;
+    background: var(--diamond); clip-path: polygon(50% 0,100% 50%,50% 100%,0 50%);
+  }
+
+  form{ display:grid; gap: 18px; }
+  .field{ display:grid; gap: 6px; }
+  .field label{ font-size: 0.86rem; font-weight: 600; color: var(--bone); }
+  .field .hint{ font-size: 0.78rem; color: var(--bone-dim); font-weight: 400; }
+  .field input, .field textarea{
+    background: var(--panel); border: 1px solid var(--line);
+    border-radius: 8px; padding: 12px 14px; color: var(--bone);
+    font-family: var(--body); font-size: 0.95rem; resize: vertical;
+  }
+  .field input::placeholder, .field textarea::placeholder{ color: #6b6086; }
+  .field input:focus, .field textarea:focus{ border-color: var(--diamond); }
+  .two-col{ display:grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+  .error-msg{
+    color: var(--danger); font-size: 0.82rem; min-height: 1em;
+  }
+  .submit-row{ display:flex; align-items:center; gap: 16px; margin-top: 4px; }
+  .submit-btn{
+    background: var(--amethyst); color: #100B1F; border:none;
+    font-family: var(--body); font-weight: 700; font-size: 0.95rem;
+    padding: 13px 26px; border-radius: 10px; cursor:pointer;
+    transition: background 0.15s, transform 0.15s;
+  }
+  .submit-btn:hover{ background: var(--amethyst-d); transform: translateY(-2px); }
+  .form-status{ font-size: 0.85rem; color: var(--bone-dim); }
+
+  .confirmation{
+    margin-top: 24px; background: var(--panel); border: 1px solid var(--diamond);
+    border-radius: var(--radius); padding: 24px;
+  }
+  .confirmation h3{ color: var(--diamond); font-size: 1rem; margin-bottom: 10px; }
+  .confirmation pre{
+    background: var(--ink); border: 1px solid var(--line); border-radius: 8px;
+    padding: 16px; font-family: var(--mono); font-size: 0.8rem; color: var(--bone-dim);
+    white-space: pre-wrap; word-break: break-word; max-height: 280px; overflow:auto;
+  }
+  .confirmation .actions{ display:flex; gap: 12px; margin-top: 14px; flex-wrap: wrap; }
+
+  /* ---------- FOOTER ---------- */
+  footer{ padding: 40px 0; }
+  .footer-inner{
+    display:flex; flex-wrap:wrap; justify-content:space-between; gap:16px;
+    color: var(--bone-dim); font-size: 0.85rem;
+  }
+  footer a:hover{ color: var(--diamond); }
+
+  /* ---------- RESPONSIVE ---------- */
+  @media (max-width: 880px){
+    .hero-inner{ grid-template-columns: 1fr; }
+    .facet-stage{ height: 220px; opacity: 0.7; order: -1; }
+    .appeal-layout{ grid-template-columns: 1fr; }
+    .two-col{ grid-template-columns: 1fr; }
+  }
+  @media (max-width: 720px){
+    .nav-links{
+      position: absolute; top: 100%; left:0; right:0;
+      background: var(--ink-soft); border-bottom: 1px solid var(--line);
+      flex-direction: column; align-items: flex-start; gap: 4px;
+      padding: 10px 24px 18px; display:none;
+    }
+    .nav-links.open{ display:flex; }
+    .nav-links a{ width:100%; padding: 10px 0; }
+    .nav-links a.cta-link{ width:auto; margin-top: 6px; }
+    .nav-toggle{ display:block; }
+  }
+</style>
+</head>
+<body>
+
+<div class="voxels" id="voxels" aria-hidden="true"></div>
+
+<div class="admin-modal-backdrop" id="adminModal" hidden>
+  <div class="admin-modal">
+    <h3>Owner / Admin only</h3>
+    <p>Enter the admin password to edit the server IP and port.</p>
+    <input type="password" id="adminPasswordInput" placeholder="Password" autocomplete="off">
+    <div class="admin-err" id="adminErr"></div>
+    <div class="actions">
+      <button class="btn btn-primary" id="adminUnlockBtn" type="button" style="border:none; cursor:pointer;">Unlock</button>
+      <button class="btn btn-ghost" id="adminCancelBtn" type="button" style="cursor:pointer;">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<div class="admin-modal-backdrop" id="authModal" hidden>
+  <div class="admin-modal">
+    <h3 id="authModalTitle">Log in</h3>
+    <p id="authModalSubtitle">Log in to your Crystal Ville account.</p>
+    <input type="email" id="authEmail" placeholder="Email" autocomplete="email">
+    <input type="password" id="authPassword" placeholder="Password" autocomplete="current-password">
+    <div class="admin-err" id="authErr"></div>
+    <div class="actions">
+      <button class="btn btn-primary" id="authSubmitBtn" type="button" style="border:none; cursor:pointer;">Log in</button>
+      <button class="btn btn-ghost" id="authCancelBtn" type="button" style="cursor:pointer;">Cancel</button>
+    </div>
+    <p style="margin-top:14px; font-size:0.82rem;">
+      <a href="#" id="authToggleMode" style="color:var(--diamond);">Need an account? Sign up</a>
+    </p>
+  </div>
+</div>
+
+<nav class="topnav">
+  <div class="topnav-inner">
+    <a href="#welcome" class="brand"><span class="brand-mark"></span>CRYSTAL VILLE</a>
+    <button class="nav-toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false"><span></span></button>
+    <div class="nav-links" id="navLinks">
+      <a href="#welcome" data-nav>Welcome</a>
+      <a href="#world" data-nav>The World</a>
+      <a href="#rules" data-nav>Rules</a>
+      <a href="#join" data-nav>Join Us</a>
+      <a href="#staff-application" data-nav>Staff Application</a>
+      <a href="#owner" data-nav>Owner</a>
+      <a href="#" id="navAuthBtn" data-nav>Login</a>
+      <a href="#ban-appeal" class="cta-link" data-nav>Ban Appeal</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero" id="welcome">
+  <div class="hero-glow"></div>
+  <div class="hero-inner">
+    <div>
+      <p class="eyebrow">Java Edition · Survival SMP</p>
+      <h1>Welcome to<br><em>Crystal Ville</em></h1>
+      <p class="tagline">A world built the way a geode grows — slow, layered, and worth the dig. Build towns, run the economy, and survive alongside a small, close-knit community.</p>
+      <div class="server-info">
+        <div class="ip-pill" id="javaIpPill">
+          <span class="ip-label">Java IP:</span>
+          <code id="javaIp">play.crystalville.net</code>
+          <button class="copy-btn" data-copy-target="javaIp" type="button">Copy</button>
+        </div>
+        <div class="ip-pill" id="bedrockIpPill">
+          <span class="ip-label">Bedrock IP:</span>
+          <code id="bedrockIp">play.crystalville.net</code><code id="bedrockPort" style="color:var(--bone-dim);">:19132</code>
+          <button class="copy-btn" data-copy-target="bedrock" type="button">Copy</button>
+        </div>
+        <button class="edit-btn" id="editIpBtn" type="button" aria-label="Edit server IPs (owner/admin only)" title="Edit IPs (owner/admin only)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"></path><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"></path></svg>
+        </button>
+      </div>
+      <div class="ip-edit-fields" id="ipEditFields" hidden>
+        <div class="edit-row">
+          <label for="editJavaIp">Java IP</label>
+          <input type="text" id="editJavaIp" placeholder="play.crystalville.net">
+        </div>
+        <div class="edit-row">
+          <label for="editBedrockIp">Bedrock IP</label>
+          <input type="text" id="editBedrockIp" placeholder="play.crystalville.net">
+        </div>
+        <div class="edit-row">
+          <label for="editBedrockPort">Bedrock Port</label>
+          <input type="text" id="editBedrockPort" placeholder="19132">
+        </div>
+        <div class="edit-actions">
+          <button class="save-btn" id="saveIpBtn" type="button">Save</button>
+          <button class="cancel-btn" id="cancelIpBtn" type="button">Cancel</button>
+        </div>
+      </div>
+      <div class="server-info">
+        <span class="status"><span class="dot"></span>ONLINE · v1.21</span>
+      </div>
+      <div class="cta-row">
+        <a href="#join" class="btn btn-primary">How to join</a>
+        <a href="#ban-appeal" class="btn btn-ghost">Submit a ban appeal</a>
+      </div>
+    </div>
+    <div class="facet-stage" id="facetStage" aria-hidden="true">
+      <div class="facet f1"></div>
+      <div class="facet f2"></div>
+      <div class="facet f3"></div>
+      <div class="facet f4"></div>
+    </div>
+  </div>
+</header>
+
+<section class="section" id="world">
+  <div class="wrap">
+    <div class="section-head">
+      <p class="eyebrow">The World</p>
+      <h2>One map, built by everyone on it</h2>
+      <p>Replace this copy with what actually makes your server worth joining — the features below are placeholders to get you started.</p>
+    </div>
+    <div class="feature-grid">
+      <div class="card">
+        <h3>Player Towns</h3>
+        <p>Claim land, found a town, and set your own rules for who can build there.</p>
+      </div>
+      <div class="card">
+        <h3>Player-Run Economy</h3>
+        <p>Trade at shops set up by other players — prices move with supply, not a plugin's price list.</p>
+      </div>
+      <div class="card">
+        <h3>Custom Enchants</h3>
+        <p>A handful of hand-picked enchantments add new options without breaking vanilla balance.</p>
+      </div>
+      <div class="card">
+        <h3>Seasonal Events</h3>
+        <p>Build contests, mob events, and map resets that keep the world feeling alive.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section alt" id="rules">
+  <div class="wrap">
+    <div class="section-head">
+      <p class="eyebrow">Rules</p>
+      <h2>⚔️ Crystal Ville SMP – Server Rules ⚔️</h2>
+    </div>
+    <p class="rules-intro">Welcome to Crystal Ville! Hum sab barabar hain, yahan koi king ya staff nahi hai. Game ke andar poori chhoot hai (Griefing, PVP, Looting sab allowed hai), par dosti bani rahe aur game smoothly chale, isliye ye kuch rules hain jo sabko follow karne hain:</p>
+    <ul class="rules-list">
+      <li>👑 Hum sab barabar hain, yahan koi king ya staff nahi hai, isliye sabko ek dusre ke saath respectful rehna hoga.</li>
+      <li>⚔️ Game ke andar poori chhoot hai (Griefing, PVP, Looting sab allowed hai), par game ka gussa game tak hi rakhna, Discord par aakar toxic mat hona.</li>
+      <li>❌ X-ray, Fly, ya kisi bhi tarah ke hacked clients aur cheats ka use bilkul mana hai, pakde jaane par seedha ban kiya jayega.</li>
+      <li>🏗️ Server par koi bhi aisi lag machine ya redstone contraption mat banana jisse server crash ho ya ping kharab ho.</li>
+      <li>🚫 Ek dusre ki personal life par koi comment nahi karega, real-life threats ya dushmani bilkul bardaasht nahi hogi.</li>
+      <li>🤫 In-game ladaai ya loot ke baad Discord par rona-dhona ya faltu ka drama create mat karna, apna badla game ke andar hi lo.</li>
+      <li>🤝 Jo bhi player in rules ko todega, use baaki sabhi doston ki aapsi sehmati se server se bahar kar diya jayega.</li>
+    </ul>
+  </div>
+</section>
+
+<section class="section" id="join">
+  <div class="wrap">
+    <div class="section-head">
+      <p class="eyebrow">Join Us</p>
+      <h2>Three steps to your first night</h2>
+    </div>
+    <div class="join-grid">
+      <div class="card join-card">
+        <span class="step">STEP 1</span>
+        <h3>Add the server</h3>
+        <p>Open Minecraft Java Edition, go to Multiplayer → Add Server, and paste the IP above.</p>
+      </div>
+      <div class="card join-card">
+        <span class="step">STEP 2</span>
+        <h3>Join the Discord</h3>
+        <p><a href="https://discord.gg/C9tXReA7N" target="_blank" rel="noopener" style="color:var(--diamond); text-decoration:underline;">discord.gg/C9tXReA7N</a> — this is where announcements, support, and the rest of the community live.</p>
+      </div>
+      <div class="card join-card">
+        <span class="step">STEP 3</span>
+        <h3>Read the rules</h3>
+        <p>Skim the rules section above so your first day doesn't end with an accidental ban.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="staff-application">
+  <div class="wrap">
+    <div class="section-head">
+      <p class="eyebrow">Staff Application</p>
+      <h2>Want to help run Crystal Ville?</h2>
+      <p>We bring on staff in small batches, not constantly — fill this in honestly and we'll reach out on Discord either way.</p>
+    </div>
+    <div class="appeal-layout">
+      <div class="appeal-notes">
+        <h3>What we look for</h3>
+        <ul>
+          <li>Calm under pressure — staff defuse arguments, they don't join them.</li>
+          <li>Active in-game and on Discord, not just one or the other.</li>
+          <li>No bans or major rule warnings on your record.</li>
+          <li>Comfortable enforcing rules on friends, not just strangers.</li>
+        </ul>
+      </div>
+
+      <div>
+        <form id="staffForm" novalidate>
+          <div class="two-col">
+            <div class="field">
+              <label for="staffMcUsername">Minecraft username *</label>
+              <input type="text" id="staffMcUsername" name="staffMcUsername" placeholder="e.g. Steve_Builds" required>
+              <div class="error-msg" id="err-staffMcUsername"></div>
+            </div>
+            <div class="field">
+              <label for="staffDiscordUsername">Discord username *</label>
+              <input type="text" id="staffDiscordUsername" name="staffDiscordUsername" placeholder="e.g. steve.builds" required>
+              <div class="error-msg" id="err-staffDiscordUsername"></div>
+            </div>
+          </div>
+
+          <div class="two-col">
+            <div class="field">
+              <label for="staffAge">Age *</label>
+              <input type="number" id="staffAge" name="staffAge" min="1" max="120" placeholder="e.g. 17" required>
+              <div class="error-msg" id="err-staffAge"></div>
+            </div>
+            <div class="field">
+              <label for="staffTimezone">Timezone / usual play hours <span class="hint">(optional)</span></label>
+              <input type="text" id="staffTimezone" name="staffTimezone" placeholder="e.g. IST, evenings">
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="staffWhy">Why do you want to be staff? *</label>
+            <textarea id="staffWhy" name="staffWhy" rows="4" placeholder="Be specific — what would you actually do with the role?" required></textarea>
+            <div class="error-msg" id="err-staffWhy"></div>
+          </div>
+
+          <div class="field">
+            <label for="staffExperience">Any past staff or moderation experience? <span class="hint">(optional)</span></label>
+            <textarea id="staffExperience" name="staffExperience" rows="3" placeholder="Other servers, Discords, anything relevant"></textarea>
+          </div>
+
+          <div class="submit-row">
+            <button type="submit" class="submit-btn" id="staffSubmitBtn">Submit application</button>
+            <span class="form-status" id="staffFormStatus"></span>
+          </div>
+        </form>
+
+        <div class="confirmation" id="staffConfirmation" hidden>
+          <h3>Your application has been sent</h3>
+          <p style="color:var(--bone-dim); font-size:0.9rem; margin-bottom:12px;">Staff have been notified by email automatically. Here's a copy for your records — you can also paste it into Discord if you'd like.</p>
+          <pre id="staffSummary"></pre>
+          <div class="actions">
+            <a class="btn btn-primary" id="staffMailtoBtn" href="#">Email us manually</a>
+            <button class="btn btn-ghost" id="copyStaffSummaryBtn" type="button">Copy text</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section alt appeal-section" id="ban-appeal">
+  <div class="wrap">
+    <div class="section-head">
+      <p class="eyebrow">Ban Appeal</p>
+      <h2>Think your ban was a mistake?</h2>
+      <p>Fill in the form honestly and specifically — vague appeals are the ones staff can't act on.</p>
+    </div>
+    <div class="appeal-layout">
+      <div class="appeal-notes">
+        <h3>Before you submit</h3>
+        <ul>
+          <li>One appeal per ban — duplicate submissions go to the back of the queue.</li>
+          <li>Staff usually respond within 3–5 days via Discord DM.</li>
+          <li>Be specific. "I didn't do it" without context is hard to review.</li>
+          <li>Evidence (screenshots, clips) speeds up a decision — link it, don't describe it.</li>
+          <li>Appeals are reviewed by staff, not decided by this page — this form prepares your case and hands it off by email.</li>
+        </ul>
+      </div>
+
+      <form id="appealForm" novalidate>
+        <div class="two-col">
+          <div class="field">
+            <label for="mcUsername">Minecraft username *</label>
+            <input type="text" id="mcUsername" name="mcUsername" placeholder="e.g. Steve_Builds" required>
+            <div class="error-msg" id="err-mcUsername"></div>
+          </div>
+          <div class="field">
+            <label for="discordTag">Discord username <span class="hint">(optional)</span></label>
+            <input type="text" id="discordTag" name="discordTag" placeholder="e.g. steve.builds">
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="banReason">What reason were you given for the ban? *</label>
+          <textarea id="banReason" name="banReason" rows="2" placeholder="Copy the exact ban message if you have it" required></textarea>
+          <div class="error-msg" id="err-banReason"></div>
+        </div>
+
+        <div class="field">
+          <label for="appealReason">Why should this ban be lifted or shortened? *</label>
+          <textarea id="appealReason" name="appealReason" rows="4" placeholder="Explain what happened, in your own words" required></textarea>
+          <div class="error-msg" id="err-appealReason"></div>
+        </div>
+
+        <div class="field">
+          <label for="evidenceLink">Evidence link <span class="hint">(optional — screenshot, clip, etc.)</span></label>
+          <input type="url" id="evidenceLink" name="evidenceLink" placeholder="https://...">
+        </div>
+
+        <div class="submit-row">
+          <button type="submit" class="submit-btn" id="appealSubmitBtn">Review my appeal</button>
+          <span class="form-status" id="formStatus"></span>
+        </div>
+      </form>
+
+      <div class="confirmation" id="confirmation" hidden>
+        <h3>Your appeal has been sent</h3>
+        <p style="color:var(--bone-dim); font-size:0.9rem; margin-bottom:12px;">Staff have been notified by email automatically. Here's a copy for your records — you can also paste it into Discord if you'd like.</p>
+        <pre id="appealSummary"></pre>
+        <div class="actions">
+          <a class="btn btn-primary" id="mailtoBtn" href="#">Email us manually</a>
+          <button class="btn btn-ghost" id="copySummaryBtn" type="button">Copy text</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section alt" id="admin-panel" hidden>
+  <div class="wrap">
+    <div class="section-head">
+      <p class="eyebrow">Staff Only</p>
+      <h2>Admin Panel</h2>
+    </div>
+    <div class="card" style="max-width:480px;">
+      <p>You're seeing this because your account role is <strong id="adminPanelRole">Admin</strong>. Put staff-only tools, links, or notes here — this section is hidden from everyone else.</p>
+    </div>
+  </div>
+</section>
+
+<section class="section alt" id="owner">
+  <div class="wrap">
+    <div class="section-head">
+      <p class="eyebrow">Owner</p>
+      <h2>Who runs Crystal Ville</h2>
+    </div>
+    <div class="card" style="max-width:360px;">
+      <h3>Divyansh Sharma</h3>
+      <p>Founder &amp; Owner</p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap footer-inner">
+    <span>© 2026 Crystal Ville SMP</span>
+    <span><a href="#welcome">Welcome</a> · <a href="#rules">Rules</a> · <a href="#staff-application">Staff Application</a> · <a href="#owner">Owner</a> · <a href="#ban-appeal">Ban Appeal</a> · <a href="https://discord.gg/C9tXReA7N" target="_blank" rel="noopener">Discord</a></span>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<script>
+  // ============== SUPABASE + EMAILJS CONFIG ==============
+  // Fill these in with your own project values, then everything below just works.
+  const SUPABASE_URL = 'https://sulaflsevtrsnztchsbm.supabase.co';
+  const SUPABASE_ANON_KEY = 'sb_publishable_ngFvqoo3H43i4AT5dgbijA_xk-bjAZG';
+  const EMAILJS_PUBLIC_KEY = 'z3xITfuRqkC_ymCG0';
+  const EMAILJS_SERVICE_ID = 'service_qhue5w5';
+  const EMAILJS_TEMPLATE_ID = 'template_wzsztyi'; // used for the ban appeal form
+  const EMAILJS_STAFF_TEMPLATE_ID = 'template_4zax1h6'; // used for the staff application form — can reuse the same template ID above if you'd rather have one generic template
+
+  const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+  emailjs.init(EMAILJS_PUBLIC_KEY);
+
+  let currentUser = null;
+  let currentRole = null;
+  let authMode = 'login';
+
+  const navAuthBtn = document.getElementById('navAuthBtn');
+  const authModal = document.getElementById('authModal');
+  const authEmailInput = document.getElementById('authEmail');
+  const authPasswordInput = document.getElementById('authPassword');
+  const authErr = document.getElementById('authErr');
+  const authModalTitle = document.getElementById('authModalTitle');
+  const authSubmitBtn = document.getElementById('authSubmitBtn');
+  const authToggleMode = document.getElementById('authToggleMode');
+  const authCancelBtn = document.getElementById('authCancelBtn');
+
+  function openAuthModal(mode) {
+    authMode = mode;
+    authErr.textContent = '';
+    authEmailInput.value = '';
+    authPasswordInput.value = '';
+    authModalTitle.textContent = mode === 'login' ? 'Log in' : 'Sign up';
+    authSubmitBtn.textContent = mode === 'login' ? 'Log in' : 'Sign up';
+    authToggleMode.textContent = mode === 'login' ? 'Need an account? Sign up' : 'Already have an account? Log in';
+    authModal.hidden = false;
+    authEmailInput.focus();
+  }
+
+  navAuthBtn.addEventListener('click', (e) => {
+    e.preventDefault();
+    if (currentUser) {
+      supabaseClient.auth.signOut();
+    } else {
+      openAuthModal('login');
+    }
+  });
+
+  authCancelBtn.addEventListener('click', () => { authModal.hidden = true; });
+  authModal.addEventListener('click', (e) => { if (e.target === authModal) authModal.hidden = true; });
+
+  authToggleMode.addEventListener('click', (e) => {
+    e.preventDefault();
+    openAuthModal(authMode === 'login' ? 'signup' : 'login');
+  });
+
+  authSubmitBtn.addEventListener('click', async () => {
+    const email = authEmailInput.value.trim();
+    const password = authPasswordInput.value;
+    authErr.textContent = '';
+    if (!email || !password) { authErr.textContent = 'Enter an email and password.'; return; }
+
+    const { error } = authMode === 'login'
+      ? await supabaseClient.auth.signInWithPassword({ email, password })
+      : await supabaseClient.auth.signUp({ email, password });
+
+    if (error) { authErr.textContent = error.message; return; }
+
+    authModal.hidden = true;
+    if (authMode === 'signup') {
+      alert('Check your email to confirm your account, then log in.');
+    }
+  });
+
+  async function loadUserAndRole() {
+    const { data: { user } } = await supabaseClient.auth.getUser();
+    currentUser = user;
+    const adminPanel = document.getElementById('admin-panel');
+
+    if (!user) {
+      currentRole = null;
+      navAuthBtn.textContent = 'Login';
+      adminPanel.hidden = true;
+      return;
+    }
+
+    navAuthBtn.textContent = 'Log out (' + user.email + ')';
+
+    const { data: profile } = await supabaseClient
+      .from('profiles')
+      .select('role')
+      .eq('id', user.id)
+      .single();
+
+    currentRole = profile ? profile.role : 'Member';
+
+    if (currentRole === 'Owner' || currentRole === 'Admin') {
+      adminPanel.hidden = false;
+      document.getElementById('adminPanelRole').textContent = currentRole;
+    } else {
+      adminPanel.hidden = true;
+    }
+  }
+
+  supabaseClient.auth.onAuthStateChange(() => { loadUserAndRole(); });
+  loadUserAndRole();
+
+  // ---- Mobile nav toggle ----
+  const navToggle = document.getElementById('navToggle');
+  const navLinks = document.getElementById('navLinks');
+  navToggle.addEventListener('click', () => {
+    const open = navLinks.classList.toggle('open');
+    navToggle.classList.toggle('open', open);
+    navToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+  });
+  navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+    navLinks.classList.remove('open');
+    navToggle.classList.remove('open');
+    navToggle.setAttribute('aria-expanded', 'false');
+  }));
+
+  // ---- Scrollspy ----
+  const sections = ['welcome','world','rules','join','staff-application','owner','ban-appeal'].map(id => document.getElementById(id));
+  const navAnchors = Array.from(document.querySelectorAll('[data-nav]'));
+  const setActive = () => {
+    let current = sections[0];
+    const offset = 90;
+    sections.forEach(sec => { if (sec.getBoundingClientRect().top - offset <= 0) current = sec; });
+    navAnchors.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + current.id));
+  };
+  document.addEventListener('scroll', setActive, { passive: true });
+  setActive();
+
+  // ---- Minecraft-style voxel backdrop ----
+  const voxelsWrap = document.getElementById('voxels');
+  const voxelReduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (voxelsWrap && !voxelReduceMotion) {
+    const types = ['grass', 'dirt', 'stone', 'amethyst'];
+    const count = window.innerWidth < 720 ? 10 : 18;
+    for (let i = 0; i < count; i++) {
+      const v = document.createElement('div');
+      const size = 10 + Math.round(Math.random() * 14);
+      v.className = 'voxel ' + types[Math.floor(Math.random() * types.length)];
+      v.style.width = size + 'px';
+      v.style.height = size + 'px';
+      v.style.left = Math.random() * 100 + '%';
+      v.style.animationDuration = (18 + Math.random() * 22) + 's';
+      v.style.animationDelay = (Math.random() * -30) + 's';
+      voxelsWrap.appendChild(v);
+    }
+  }
+
+  // ---- Server IPs / Port: display + admin-only editing ----
+  // Values are stored in this browser's localStorage, so once the owner/admin
+  // saves a change on their own device, it persists there across visits.
+  // This is a static page with no backend, so this is client-side only —
+  // it does not push the update to other visitors' browsers. For that,
+  // the IPs would need to be served from a small backend or database instead.
+  const DEFAULT_JAVA_IP = 'play.crystalville.net';
+  const DEFAULT_BEDROCK_IP = 'play.crystalville.net';
+  const DEFAULT_BEDROCK_PORT = '19132';
+  const ADMIN_PASSWORD = 'DS841277'; // staff: change this if you ever want a different password
+
+  const javaIpEl = document.getElementById('javaIp');
+  const bedrockIpEl = document.getElementById('bedrockIp');
+  const bedrockPortEl = document.getElementById('bedrockPort');
+  const editIpBtn = document.getElementById('editIpBtn');
+  const ipEditFields = document.getElementById('ipEditFields');
+  const editJavaIpInput = document.getElementById('editJavaIp');
+  const editBedrockIpInput = document.getElementById('editBedrockIp');
+  const editBedrockPortInput = document.getElementById('editBedrockPort');
+  const saveIpBtn = document.getElementById('saveIpBtn');
+  const cancelIpBtn = document.getElementById('cancelIpBtn');
+  const adminModal = document.getElementById('adminModal');
+  const adminPasswordInput = document.getElementById('adminPasswordInput');
+  const adminErr = document.getElementById('adminErr');
+  const adminUnlockBtn = document.getElementById('adminUnlockBtn');
+  const adminCancelBtn = document.getElementById('adminCancelBtn');
+
+  function renderServerInfo(javaIp, bedrockIp, bedrockPort) {
+    javaIpEl.textContent = javaIp;
+    bedrockIpEl.textContent = bedrockIp;
+    bedrockPortEl.textContent = bedrockPort ? (':' + bedrockPort) : '';
+  }
+
+  function loadServerInfo() {
+    let javaIp = DEFAULT_JAVA_IP, bedrockIp = DEFAULT_BEDROCK_IP, bedrockPort = DEFAULT_BEDROCK_PORT;
+    try {
+      const saved = JSON.parse(localStorage.getItem('crystalville_server') || 'null');
+      if (saved) {
+        javaIp = saved.javaIp || javaIp;
+        bedrockIp = saved.bedrockIp || bedrockIp;
+        bedrockPort = saved.bedrockPort || bedrockPort;
+      }
+    } catch (e) { /* ignore corrupted storage */ }
+    renderServerInfo(javaIp, bedrockIp, bedrockPort);
+  }
+  loadServerInfo();
+
+  // Edit icon only ever opens the password prompt — nothing is editable without it.
+  editIpBtn.addEventListener('click', () => {
+    adminErr.textContent = '';
+    adminPasswordInput.value = '';
+    adminModal.hidden = false;
+    adminPasswordInput.focus();
+  });
+
+  adminCancelBtn.addEventListener('click', () => { adminModal.hidden = true; });
+  adminModal.addEventListener('click', (e) => { if (e.target === adminModal) adminModal.hidden = true; });
+
+  function tryUnlock() {
+    if (adminPasswordInput.value === ADMIN_PASSWORD) {
+      adminModal.hidden = true;
+      editJavaIpInput.value = javaIpEl.textContent;
+      editBedrockIpInput.value = bedrockIpEl.textContent;
+      editBedrockPortInput.value = bedrockPortEl.textContent.replace(':', '');
+      ipEditFields.hidden = false;
+      editJavaIpInput.focus();
+    } else {
+      adminErr.textContent = 'Incorrect password.';
+    }
+  }
+  adminUnlockBtn.addEventListener('click', tryUnlock);
+  adminPasswordInput.addEventListener('keydown', (e) => { if (e.key === 'Enter') tryUnlock(); });
+
+  cancelIpBtn.addEventListener('click', () => { ipEditFields.hidden = true; });
+
+  saveIpBtn.addEventListener('click', () => {
+    const javaIp = editJavaIpInput.value.trim() || DEFAULT_JAVA_IP;
+    const bedrockIp = editBedrockIpInput.value.trim() || DEFAULT_BEDROCK_IP;
+    const bedrockPort = editBedrockPortInput.value.trim() || DEFAULT_BEDROCK_PORT;
+    localStorage.setItem('crystalville_server', JSON.stringify({ javaIp, bedrockIp, bedrockPort }));
+    renderServerInfo(javaIp, bedrockIp, bedrockPort);
+    ipEditFields.hidden = true;
+  });
+
+  // ---- Copy IP buttons ----
+  document.querySelectorAll('[data-copy-target]').forEach(btn => {
+    btn.addEventListener('click', async () => {
+      const target = btn.getAttribute('data-copy-target');
+      const text = target === 'javaIp'
+        ? javaIpEl.textContent
+        : bedrockIpEl.textContent + bedrockPortEl.textContent;
+      const original = btn.textContent;
+      try {
+        await navigator.clipboard.writeText(text);
+        btn.textContent = 'Copied!';
+      } catch (e) {
+        btn.textContent = 'Press Ctrl+C';
+      }
+      setTimeout(() => { btn.textContent = original; }, 1800);
+    });
+  });
+
+  // ---- Crystal light tracking ----
+  const facetStage = document.getElementById('facetStage');
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (!reduceMotion && facetStage) {
+    const updateLight = (xPct, yPct) => {
+      facetStage.querySelectorAll('.facet').forEach(f => {
+        f.style.setProperty('--gx', xPct + '%');
+        f.style.setProperty('--gy', yPct + '%');
+      });
+    };
+    window.addEventListener('mousemove', (e) => {
+      const rect = facetStage.getBoundingClientRect();
+      const x = ((e.clientX - rect.left) / rect.width) * 100;
+      const y = ((e.clientY - rect.top) / rect.height) * 100;
+      updateLight(Math.max(-20, Math.min(120, x)), Math.max(-20, Math.min(120, y)));
+    }, { passive: true });
+  }
+
+  // ---- Ban appeal form ----
+  const form = document.getElementById('appealForm');
+  const confirmation = document.getElementById('confirmation');
+  const formStatus = document.getElementById('formStatus');
+  const APPEAL_EMAIL = 'crystalville.staff@gmail.com'; // staff: replace with your real inbox
+
+  const requiredFields = ['mcUsername', 'banReason', 'appealReason'];
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    if (!currentUser) {
+      alert('Please login to submit this form.');
+      openAuthModal('login');
+      return;
+    }
+
+    let valid = true;
+    requiredFields.forEach(name => {
+      const field = document.getElementById(name);
+      const err = document.getElementById('err-' + name);
+      if (!field.value.trim()) {
+        err.textContent = 'This field is required.';
+        field.style.borderColor = 'var(--danger)';
+        valid = false;
+      } else {
+        err.textContent = '';
+        field.style.borderColor = 'var(--line)';
+      }
+    });
+
+    if (!valid) {
+      formStatus.textContent = 'Please fill in the required fields above.';
+      formStatus.style.color = 'var(--danger)';
+      return;
+    }
+    formStatus.textContent = '';
+
+    const data = {
+      username: document.getElementById('mcUsername').value.trim(),
+      discord: document.getElementById('discordTag').value.trim(),
+      banReason: document.getElementById('banReason').value.trim(),
+      appealReason: document.getElementById('appealReason').value.trim(),
+      evidence: document.getElementById('evidenceLink').value.trim(),
+    };
+
+    const summary =
+`Minecraft username: ${data.username}
+Discord username: ${data.discord || '(not provided)'}
+Reason given for ban: ${data.banReason}
+Why the ban should be lifted: ${data.appealReason}
+Evidence link: ${data.evidence || '(none provided)'}`;
+
+    const submitBtn = document.getElementById('appealSubmitBtn');
+    const originalBtnText = submitBtn.textContent;
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Sending...';
+
+    try {
+      // 1. Save to Supabase — this is the record of truth for the appeal.
+      const { error: dbError } = await supabaseClient.from('appeals').insert({
+        mc_username: data.username,
+        discord_tag: data.discord,
+        ban_reason: data.banReason,
+        appeal_reason: data.appealReason,
+        evidence_link: data.evidence,
+      });
+      if (dbError) throw new Error('Database error: ' + dbError.message);
+
+      // 2. Email staff directly via EmailJS — awaited so a failure here is
+      //    caught and reported instead of failing silently in the background.
+      await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
+        mc_username: data.username,
+        discord_tag: data.discord || '(not provided)',
+        ban_reason: data.banReason,
+        appeal_reason: data.appealReason,
+        evidence_link: data.evidence || '(none provided)',
+      });
+
+      // Manual mailto link kept only as an optional backup the user can click.
+      const subject = encodeURIComponent('Ban Appeal — ' + data.username);
+      const body = encodeURIComponent(summary);
+      document.getElementById('mailtoBtn').href = `mailto:${APPEAL_EMAIL}?subject=${subject}&body=${body}`;
+      document.getElementById('appealSummary').textContent = summary;
+
+      formStatus.textContent = 'Application sent successfully!';
+      formStatus.style.color = 'var(--diamond)';
+      confirmation.hidden = false;
+      confirmation.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
+      form.reset();
+    } catch (err) {
+      console.error('Appeal submit error:', err);
+      formStatus.textContent = 'An error has occurred. Please contact us on Discord.';
+      formStatus.style.color = 'var(--danger)';
+    } finally {
+      submitBtn.disabled = false;
+      submitBtn.textContent = originalBtnText;
+    }
+  });
+
+  document.getElementById('copySummaryBtn').addEventListener('click', async () => {
+    const text = document.getElementById('appealSummary').textContent;
+    try {
+      await navigator.clipboard.writeText(text);
+      const btn = document.getElementById('copySummaryBtn');
+      const old = btn.textContent;
+      btn.textContent = 'Copied!';
+      setTimeout(() => { btn.textContent = old; }, 1800);
+    } catch (e) { /* clipboard unavailable, no-op */ }
+  });
+
+  // ---- Staff application ----
+  const staffForm = document.getElementById('staffForm');
+  const staffConfirmation = document.getElementById('staffConfirmation');
+  const staffFormStatus = document.getElementById('staffFormStatus');
+  const STAFF_EMAIL = 'crystalville.staff@gmail.com'; // staff: replace with your real inbox
+  const staffRequired = ['staffMcUsername', 'staffDiscordUsername', 'staffAge', 'staffWhy'];
+
+  staffForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    if (!currentUser) {
+      alert('Please login to submit this form.');
+      openAuthModal('login');
+      return;
+    }
+
+    let valid = true;
+    staffRequired.forEach(name => {
+      const field = document.getElementById(name);
+      const err = document.getElementById('err-' + name);
+      if (!field.value.trim()) {
+        err.textContent = 'This field is required.';
+        field.style.borderColor = 'var(--danger)';
+        valid = false;
+      } else {
+        err.textContent = '';
+        field.style.borderColor = 'var(--line)';
+      }
+    });
+
+    if (!valid) {
+      staffFormStatus.textContent = 'Please fill in the required fields above.';
+      staffFormStatus.style.color = 'var(--danger)';
+      return;
+    }
+    staffFormStatus.textContent = '';
+
+    const data = {
+      mcUsername: document.getElementById('staffMcUsername').value.trim(),
+      discordUsername: document.getElementById('staffDiscordUsername').value.trim(),
+      age: document.getElementById('staffAge').value.trim(),
+      timezone: document.getElementById('staffTimezone').value.trim(),
+      why: document.getElementById('staffWhy').value.trim(),
+      experience: document.getElementById('staffExperience').value.trim(),
+    };
+
+    const summary =
+`Minecraft username: ${data.mcUsername}
+Discord username: ${data.discordUsername}
+Age: ${data.age}
+Timezone / play hours: ${data.timezone || '(not provided)'}
+Why they want to be staff: ${data.why}
+Past experience: ${data.experience || '(none provided)'}`;
+
+    const submitBtn = document.getElementById('staffSubmitBtn');
+    const originalBtnText = submitBtn.textContent;
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Sending...';
+
+    try {
+      // 1. Save to Supabase — this is the record of truth for the application.
+      const { error: dbError } = await supabaseClient.from('staff_applications').insert({
+        mc_username: data.mcUsername,
+        discord_username: data.discordUsername,
+        age: data.age,
+        timezone: data.timezone,
+        why: data.why,
+        experience: data.experience,
+      });
+      if (dbError) throw new Error('Database error: ' + dbError.message);
+
+      // 2. Email staff directly via EmailJS, awaited so failures are caught.
+      await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_STAFF_TEMPLATE_ID, {
+        mc_username: data.mcUsername,
+        discord_username: data.discordUsername,
+        age: data.age,
+        timezone: data.timezone || '(not provided)',
+        why: data.why,
+        experience: data.experience || '(none provided)',
+      });
+
+      // Manual mailto link kept only as an optional backup the user can click.
+      const subject = encodeURIComponent('Staff Application — ' + data.mcUsername);
+      const body = encodeURIComponent(summary);
+      document.getElementById('staffMailtoBtn').href = `mailto:${STAFF_EMAIL}?subject=${subject}&body=${body}`;
+      document.getElementById('staffSummary').textContent = summary;
+
+      staffFormStatus.textContent = 'Application sent successfully!';
+      staffFormStatus.style.color = 'var(--diamond)';
+      staffConfirmation.hidden = false;
+      staffConfirmation.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
+      staffForm.reset();
+    } catch (err) {
+      console.error('Staff application submit error:', err);
+      staffFormStatus.textContent = 'An error has occurred. Please contact us on Discord.';
+      staffFormStatus.style.color = 'var(--danger)';
+    } finally {
+      submitBtn.disabled = false;
+      submitBtn.textContent = originalBtnText;
+    }
+  });
+
+  document.getElementById('copyStaffSummaryBtn').addEventListener('click', async () => {
+    const text = document.getElementById('staffSummary').textContent;
+    try {
+      await navigator.clipboard.writeText(text);
+      const btn = document.getElementById('copyStaffSummaryBtn');
+      const old = btn.textContent;
+      btn.textContent = 'Copied!';
+      setTimeout(() => { btn.textContent = old; }, 1800);
+    } catch (e) { /* clipboard unavailable, no-op */ }
+  });
+</script>
+</body>
+</html>
