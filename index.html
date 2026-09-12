@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Crystal Ville — The Amethyst Survival Network</title>
+<meta name="description" content="Crystal Ville — a modern Minecraft survival network. Explore the economy, events, rules and community.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Unbounded:wght@500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<script src="config.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+<div class="ambient a1"></div><div class="ambient a2"></div>
+<nav class="nav"><a class="brand" href="index.html"><span class="crystal">✦</span> CRYSTAL <b>VILLE</b></a>
+<div class="navlinks"><a href="#features">Explore</a><a href="links.html">Link Tree</a><a href="#community">Community</a><a class="navbtn" href="admin.html">Admin</a></div>
+</nav>
+<main>
+<section class="hero">
+<div class="eyebrow"><span class="pulse"></span> SURVIVAL NETWORK • AMETHYST ERA</div>
+<h1>Build your <span>legacy.</span><br>Own the crystal.</h1>
+<p class="lead">A fresh survival world built around community, economy and events — with Crystal Ville's purple identity at the heart of it.</p>
+<div class="actions"><a class="btn primary" href="#join">Play Crystal Ville <span>→</span></a><a class="btn ghost" href="links.html">Explore Link Tree</a></div>
+<div class="server-card"><div><small>SERVER ADDRESS</small><strong id="serverIp">play.crystalville.net</strong></div><button id="copyBtn">COPY IP</button></div>
+</section>
+
+<section id="features" class="section">
+<div class="section-head"><span>01</span><div><h2>Explore the Ville</h2><p>Everything you need, one crystal away.</p></div></div>
+<div id="linkGrid" class="grid"></div>
+</section>
+
+<section id="community" class="split">
+<div class="glass big"><div class="mini">THE COMMUNITY</div><h2>More than a server.</h2><p>Trade, build, compete and make your mark. Crystal Ville is designed to keep the world moving with player-driven systems and regular events.</p><a class="textlink" href="links.html">Open the full Link Tree →</a></div>
+<div class="stats"><div><b>∞</b><span>Stories to create</span></div><div><b>◆</b><span>Amethyst identity</span></div><div><b>24/7</b><span>World to explore</span></div></div>
+</section>
+
+<section id="join" class="join glass"><div><div class="mini">READY?</div><h2>Enter Crystal Ville.</h2><p>Copy the server address, join the community and start your next chapter.</p></div><div class="joinbox"><code id="serverIp2">play.crystalville.net</code><button id="copyBtn2">Copy</button></div></section>
+</main>
+<footer><span>© 2026 Crystal Ville</span><span>Crafted in the Amethyst Era.</span></footer>
+<script>
+const fallback=[["Our Economy","#economy","◆","Trade, prices and the player economy."],["Events","#events","✦","Upcoming competitions and community events."],["Rules","#rules","◇","Read the rules before you play."],["Store","#store","◈","Support the network and browse the store."],["Discord","#discord","◎","Join the Crystal Ville community."]];
+let sb=null;
+try{ if(window.CV_SUPABASE_URL&&window.CV_SUPABASE_KEY) sb=supabase.createClient(CV_SUPABASE_URL,CV_SUPABASE_KEY); }catch(e){}
+async function load(){
+ let items=fallback;
+ if(sb){const {data}=await sb.from("website_links").select("title,url,icon,description").eq("enabled",true).order("sort_order"); if(data&&data.length)items=data.map(x=>[x.title,x.url,x.icon||"✦",x.description||""]);}
+ document.querySelector("#linkGrid").innerHTML=items.map(x=>`<a class="tile" href="${esc(x[1])}"><span class="tileicon">${esc(x[2])}</span><div><b>${esc(x[0])}</b><p>${esc(x[3])}</p></div><span class="arrow">↗</span></a>`).join("");
+}
+function esc(s){return String(s??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]));}
+async function copy(){await navigator.clipboard?.writeText(document.querySelector("#serverIp").textContent); document.querySelectorAll("#copyBtn,#copyBtn2").forEach(b=>{b.textContent="COPIED ✓";setTimeout(()=>b.textContent=b.id==="copyBtn"?"COPY IP":"Copy",1300)})}
+document.querySelector("#copyBtn").onclick=copy;document.querySelector("#copyBtn2").onclick=copy;load();
+</script>
+</body></html>

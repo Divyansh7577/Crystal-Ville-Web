@@ -1,0 +1,12 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Crystal Ville — Link Tree</title><link rel="stylesheet" href="style.css"><script src="config.js"></script><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script></head>
+<body><div class="ambient a1"></div><div class="ambient a2"></div><nav class="nav"><a class="brand" href="index.html"><span class="crystal">✦</span> CRYSTAL <b>VILLE</b></a><div class="navlinks"><a href="index.html">Home</a><a class="navbtn" href="admin.html">Admin</a></div></nav>
+<main><section class="linkhero"><div class="logoorb">✦</div><div class="eyebrow">CRYSTAL VILLE</div><h1>Explore the <span>Ville.</span></h1><p>One place for every important Crystal Ville link.</p></section><section class="linklist" id="list"></section></main>
+<footer><span>© 2026 Crystal Ville</span><span>Crafted in the Amethyst Era.</span></footer>
+<script>
+let sb;try{sb=supabase.createClient(CV_SUPABASE_URL,CV_SUPABASE_KEY)}catch(e){}
+const fallback=[["Our Economy","#economy","◆","Trade, prices and the player economy."],["Events","#events","✦","Upcoming competitions and community events."],["Rules","#rules","◇","Read the rules before you play."],["Store","#store","◈","Support the network and browse the store."],["Discord","#discord","◎","Join the Crystal Ville community."]];
+function esc(s){return String(s??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]));}
+async function load(){let a=fallback;if(sb){let r=await sb.from("website_links").select("title,url,icon,description").eq("enabled",true).order("sort_order");if(r.data?.length)a=r.data.map(x=>[x.title,x.url,x.icon||"✦",x.description||""])}document.querySelector("#list").innerHTML=a.map(x=>`<a class="linkrow" href="${esc(x[1])}"><span class="tileicon">${esc(x[2])}</span><span><b>${esc(x[0])}</b><small>${esc(x[3])}</small></span><strong>↗</strong></a>`).join("")}load();
+</script></body></html>
