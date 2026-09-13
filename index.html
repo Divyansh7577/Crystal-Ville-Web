@@ -43,7 +43,26 @@ let sb=null;
 try{ if(window.CV_SUPABASE_URL&&window.CV_SUPABASE_KEY) sb=supabase.createClient(CV_SUPABASE_URL,CV_SUPABASE_KEY); }catch(e){}
 async function load(){
  let items=fallback;
- if(sb){const {data}=await sb.from("website_links").select("title,url,icon,description").eq("enabled",true).order("sort_order"); if(data&&data.length)items=data.map(x=>[x.title,x.url,x.icon||"✦",x.description||""]);}
+ if(sb){
+   const settings=await sb.from("site_settings").select("value").eq("id","homepage").maybeSingle();
+   const v=settings.data?.value||{};
+   if(v.site_title){
+     document.title=v.site_title+" — The Amethyst Survival Network";
+     const brand=document.querySelector(".brand");
+     if(brand) brand.innerHTML='<span class="crystal">✦</span> '+esc(v.site_title).replace(/\\sVILLE$/i,"")+" <b>VILLE</b>";
+   }
+   if(v.tagline){
+     const lead=document.querySelector(".lead");
+     if(lead) lead.textContent=v.tagline;
+   }
+   if(v.server_ip){
+     document.querySelectorAll("#serverIp,#serverIp2").forEach(el=>el.textContent=v.server_ip);
+   }
+   if(sb){
+     const {data}=await sb.from("website_links").select("title,url,icon,description").eq("enabled",true).order("sort_order");
+     if(data&&data.length)items=data.map(x=>[x.title,x.url,x.icon||"✦",x.description||""]);
+   }
+ }
  document.querySelector("#linkGrid").innerHTML=items.map(x=>`<a class="tile" href="${esc(x[1])}"><span class="tileicon">${esc(x[2])}</span><div><b>${esc(x[0])}</b><p>${esc(x[3])}</p></div><span class="arrow">↗</span></a>`).join("");
 }
 function esc(s){return String(s??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]));}

@@ -37,3 +37,9 @@ Then open `admin.html` and sign in.
 - Add and delete links
 
 The frontend uses only the Supabase publishable key. No service-role/secret key is included.
+
+
+## Important: Website Editor sync
+Version 2.1 fixes the homepage sync issue: Server IP and homepage settings saved from
+`admin.html` are now loaded from Supabase when `index.html` opens. After committing
+the updated files to GitHub/Netlify, open the site once with a fresh reload.
