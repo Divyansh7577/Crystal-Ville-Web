@@ -1,11 +1,13 @@
-# Crystal Ville Web 2.0
+# Crystal Ville Web 3.1
 
-Files:
-- index.html — modern homepage
-- links.html — editable Link Tree
-- admin.html — authenticated Website Editor
-- style.css — purple/amethyst UI
-- config.js — Supabase public configuration
-- SETUP.md — first-admin setup
+Modern purple/amethyst Crystal Ville player hub with Supabase authentication and Minecraft account linking.
 
-The existing Crystal Ville Supabase database is already prepared. Follow SETUP.md to create the first admin account.
+Pages:
+- `index.html` — public homepage
+- `auth.html` — player sign up / sign in
+- `dashboard.html` — logged-in player dashboard + Minecraft link
+- `links.html` — Link Tree
+- `admin.html` — protected admin editor
+- `config.js` — Supabase project URL + publishable key
+
+Upload all files to the `main` branch of the Crystal-Ville-Web GitHub repository. Netlify should redeploy automatically if it is connected to the repo.

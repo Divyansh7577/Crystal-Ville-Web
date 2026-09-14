@@ -1,72 +1,53 @@
-<!doctype html>
-<html lang="en">
-<head>
+<!doctype html><html lang="en"><head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Crystal Ville — The Amethyst Survival Network</title>
-<meta name="description" content="Crystal Ville — a modern Minecraft survival network. Explore the economy, events, rules and community.">
+<meta name="description" content="Crystal Ville player hub: stats, economy, achievements, events and community.">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Unbounded:wght@500;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css">
-<script src="config.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-</head>
-<body>
-<div class="ambient a1"></div><div class="ambient a2"></div>
+<link rel="stylesheet" href="style.css"><script src="config.js"></script><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script></head>
+<body><div class="ambient a1"></div><div class="ambient a2"></div>
 <nav class="nav"><a class="brand" href="index.html"><span class="crystal">✦</span> CRYSTAL <b>VILLE</b></a>
-<div class="navlinks"><a href="#features">Explore</a><a href="links.html">Link Tree</a><a href="#community">Community</a><a class="navbtn" href="admin.html">Admin</a></div>
-</nav>
-<main>
-<section class="hero">
-<div class="eyebrow"><span class="pulse"></span> SURVIVAL NETWORK • AMETHYST ERA</div>
-<h1>Build your <span>legacy.</span><br>Own the crystal.</h1>
-<p class="lead">A fresh survival world built around community, economy and events — with Crystal Ville's purple identity at the heart of it.</p>
-<div class="actions"><a class="btn primary" href="#join">Play Crystal Ville <span>→</span></a><a class="btn ghost" href="links.html">Explore Link Tree</a></div>
-<div class="server-card"><div><small>SERVER ADDRESS</small><strong id="serverIp">play.crystalville.net</strong></div><button id="copyBtn">COPY IP</button></div>
-</section>
+<div class="navlinks"><a href="dashboard.html">Player Hub</a><a href="links.html">Link Tree</a><a href="#events">Events</a><a class="navbtn" href="admin.html">Admin</a></div></nav>
+<main><section class="hero"><div class="eyebrow"><span class="pulse"></span> SURVIVAL NETWORK • AMETHYST ERA</div>
+<h1>Your server.<br>Your <span>legacy.</span></h1><p id="tagline" class="lead">Crystal Ville is more than a Minecraft server — it is a living world with its own economy, achievements, events and community.</p>
+<div class="actions"><a class="btn primary" href="dashboard.html">Open Player Hub →</a><a class="btn ghost" href="#events">See what's happening</a></div>
+<div class="server-card"><div><small>SERVER ADDRESS</small><strong id="serverIp">play.crystalville.net</strong><span id="status" style="display:block;color:var(--muted);font-size:11px;margin-top:5px">Checking server status…</span></div><button id="copyBtn">COPY IP</button></div></section>
 
-<section id="features" class="section">
-<div class="section-head"><span>01</span><div><h2>Explore the Ville</h2><p>Everything you need, one crystal away.</p></div></div>
-<div id="linkGrid" class="grid"></div>
-</section>
+<section class="section"><div class="section-head"><span>01</span><div><h2>Crystal Hub</h2><p>Things players can actually use.</p></div></div>
+<div class="grid">
+<a class="tile" href="dashboard.html"><span class="tileicon">◈</span><div><b>Player Dashboard</b><p>Stats, balance, rank and achievements.</p></div><span class="arrow">↗</span></a>
+<a class="tile" href="#economy"><span class="tileicon">◆</span><div><b>Economy</b><p>See the Crystal economy and richest players.</p></div><span class="arrow">↓</span></a>
+<a class="tile" href="#achievements"><span class="tileicon">♛</span><div><b>Achievements</b><p>Collect milestones and rare badges.</p></div><span class="arrow">↓</span></a>
+<a class="tile" href="#events"><span class="tileicon">✦</span><div><b>Live Events</b><p>News and upcoming Crystal Ville events.</p></div><span class="arrow">↓</span></a>
+<a class="tile" href="#map"><span class="tileicon">⌖</span><div><b>World Map</b><p>Open your live map when configured.</p></div><span class="arrow">↓</span></a>
+<a class="tile" href="links.html"><span class="tileicon">◎</span><div><b>Everything Else</b><p>Rules, Discord and community links.</p></div><span class="arrow">↗</span></a>
+</div></section>
 
-<section id="community" class="split">
-<div class="glass big"><div class="mini">THE COMMUNITY</div><h2>More than a server.</h2><p>Trade, build, compete and make your mark. Crystal Ville is designed to keep the world moving with player-driven systems and regular events.</p><a class="textlink" href="links.html">Open the full Link Tree →</a></div>
-<div class="stats"><div><b>∞</b><span>Stories to create</span></div><div><b>◆</b><span>Amethyst identity</span></div><div><b>24/7</b><span>World to explore</span></div></div>
-</section>
+<section id="economy" class="section"><div class="section-head"><span>02</span><div><h2>Economy <span>Board</span></h2><p>Live data from the Crystal Ville database.</p></div></div>
+<div id="leaders" class="newsgrid"><div class="empty">Loading leaderboard…</div></div></section>
 
-<section id="join" class="join glass"><div><div class="mini">READY?</div><h2>Enter Crystal Ville.</h2><p>Copy the server address, join the community and start your next chapter.</p></div><div class="joinbox"><code id="serverIp2">play.crystalville.net</code><button id="copyBtn2">Copy</button></div></section>
-</main>
-<footer><span>© 2026 Crystal Ville</span><span>Crafted in the Amethyst Era.</span></footer>
+<section id="events" class="section"><div class="section-head"><span>03</span><div><h2>News & <span>Events</span></h2><p>Admin-posted updates appear here automatically.</p></div></div><div id="news" class="newsgrid"><div class="empty">Loading news…</div></div></section>
+
+<section id="achievements" class="section"><div class="section-head"><span>04</span><div><h2>Achievements</h2><p>Milestones players can unlock.</p></div></div><div id="achievementsGrid" class="achgrid"><div class="empty">Loading achievements…</div></div></section>
+
+<section id="map" class="section"><div class="section-head"><span>05</span><div><h2>World <span>Map</span></h2><p>Connect a BlueMap/Dynmap URL from the Admin Panel.</p></div></div><div id="mapbox" class="mapbox"><div class="empty">Live map is not configured yet.</div></div></section>
+</main><footer><span>© 2026 Crystal Ville</span><span>Crafted in the Amethyst Era.</span></footer>
 <script>
-const fallback=[["Our Economy","#economy","◆","Trade, prices and the player economy."],["Events","#events","✦","Upcoming competitions and community events."],["Rules","#rules","◇","Read the rules before you play."],["Store","#store","◈","Support the network and browse the store."],["Discord","#discord","◎","Join the Crystal Ville community."]];
-let sb=null;
-try{ if(window.CV_SUPABASE_URL&&window.CV_SUPABASE_KEY) sb=supabase.createClient(CV_SUPABASE_URL,CV_SUPABASE_KEY); }catch(e){}
+const fallbackNews=[{title:"Welcome to Crystal Ville",body:"The Amethyst Era begins. Build, trade and make your mark.",category:"News"}];
+let sb=null;try{if(CV_SUPABASE_URL&&CV_SUPABASE_KEY)sb=supabase.createClient(CV_SUPABASE_URL,CV_SUPABASE_KEY)}catch(e){}
+const esc=s=>String(s??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]));
 async function load(){
- let items=fallback;
+ let settings={}; if(sb){let r=await sb.from("site_settings").select("value").eq("id","homepage").maybeSingle();settings=r.data?.value||{}}
+ const ip=settings.server_ip||"play.crystalville.net";$("serverIp").textContent=ip;if(settings.tagline)$("tagline").textContent=settings.tagline;
+ if(settings.map_url)$("mapbox").innerHTML=`<iframe loading="lazy" src="${esc(settings.map_url)}" title="Crystal Ville live map"></iframe>`;
+ try{let r=await fetch("https://api.mcsrvstat.us/3/"+encodeURIComponent(ip));let d=await r.json();$("status").textContent=d.online?`● ONLINE  •  ${d.players?.online??0}/${d.players?.max??0} players`:"○ OFFLINE";$("status").style.color=d.online?"var(--cyan)":"var(--danger)"}catch(e){$("status").textContent="Status unavailable";}
  if(sb){
-   const settings=await sb.from("site_settings").select("value").eq("id","homepage").maybeSingle();
-   const v=settings.data?.value||{};
-   if(v.site_title){
-     document.title=v.site_title+" — The Amethyst Survival Network";
-     const brand=document.querySelector(".brand");
-     if(brand) brand.innerHTML='<span class="crystal">✦</span> '+esc(v.site_title).replace(/\\sVILLE$/i,"")+" <b>VILLE</b>";
-   }
-   if(v.tagline){
-     const lead=document.querySelector(".lead");
-     if(lead) lead.textContent=v.tagline;
-   }
-   if(v.server_ip){
-     document.querySelectorAll("#serverIp,#serverIp2").forEach(el=>el.textContent=v.server_ip);
-   }
-   if(sb){
-     const {data}=await sb.from("website_links").select("title,url,icon,description").eq("enabled",true).order("sort_order");
-     if(data&&data.length)items=data.map(x=>[x.title,x.url,x.icon||"✦",x.description||""]);
-   }
- }
- document.querySelector("#linkGrid").innerHTML=items.map(x=>`<a class="tile" href="${esc(x[1])}"><span class="tileicon">${esc(x[2])}</span><div><b>${esc(x[0])}</b><p>${esc(x[3])}</p></div><span class="arrow">↗</span></a>`).join("");
+  let [lr,nr,ar]=await Promise.all([sb.from("player_profiles").select("username,display_name,balance,rank").order("balance",{ascending:false}).limit(6),sb.from("cv_news").select("title,body,category,published_at").eq("enabled",true).order("published_at",{ascending:false}).limit(6),sb.from("cv_achievements").select("*").eq("enabled",true).order("sort_order")]);
+  $("leaders").innerHTML=lr.data?.length?lr.data.map((x,i)=>`<div class="news-card"><span class="rarity">#${i+1} • ${esc(x.rank)}</span><h3>${esc(x.display_name||x.username)}</h3><p>💎 ${Number(x.balance).toLocaleString()} Crystals</p></div>`).join(""):"<div class='empty'>No player data yet. Admin can add players from the panel.</div>";
+  $("news").innerHTML=nr.data?.length?nr.data.map(x=>`<article class="news-card"><span class="rarity">${esc(x.category)}</span><h3>${esc(x.title)}</h3><p>${esc(x.body)}</p></article>`).join(""):fallbackNews.map(x=>`<article class="news-card"><span class="rarity">${x.category}</span><h3>${x.title}</h3><p>${x.body}</p></article>`).join("");
+  $("achievementsGrid").innerHTML=ar.data?.length?ar.data.map(x=>`<article class="ach"><div style="font-size:28px">${esc(x.icon)}</div><span class="rarity">${esc(x.rarity)}</span><h3>${esc(x.title)}</h3><p>${esc(x.description)}</p></article>`).join(""):"<div class='empty'>No achievements configured.</div>";
+ } else {$("leaders").innerHTML="<div class='empty'>Connect Supabase to enable live data.</div>";$("news").innerHTML=fallbackNews.map(x=>`<article class="news-card"><span class="rarity">${x.category}</span><h3>${x.title}</h3><p>${x.body}</p></article>`).join("")}
 }
-function esc(s){return String(s??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]));}
-async function copy(){await navigator.clipboard?.writeText(document.querySelector("#serverIp").textContent); document.querySelectorAll("#copyBtn,#copyBtn2").forEach(b=>{b.textContent="COPIED ✓";setTimeout(()=>b.textContent=b.id==="copyBtn"?"COPY IP":"Copy",1300)})}
-document.querySelector("#copyBtn").onclick=copy;document.querySelector("#copyBtn2").onclick=copy;load();
-</script>
-</body></html>
+async function copy(){try{await navigator.clipboard.writeText($("serverIp").textContent)}catch(e){}$("copyBtn").textContent="COPIED ✓";setTimeout(()=>$("copyBtn").textContent="COPY IP",1400)}
+$("copyBtn").onclick=copy;load();
+</script></body></html>
