@@ -120,27 +120,41 @@ async function loadPublic(){
  const ip=settings.server_ip||'smp.playcrystalville.dpdns.org';$('serverIp').textContent=ip;if(settings.tagline)$('tagline').textContent=settings.tagline;
  if(settings.map_url)$('mapbox').innerHTML=`<iframe loading="lazy" src="${esc(settings.map_url)}" title="Crystal Ville live map"></iframe>`;
  async function checkServerStatus(host){
-  const apis=[
-    'https://api.mcstatus.io/v2/status/java/'+encodeURIComponent(host),
-    'https://api.mcsrvstat.us/3/'+encodeURIComponent(host)
-  ];
-  for(const api of apis){
+  const cleanHost=String(host||'smp.playcrystalville.dpdns.org').trim().replace(/^https?:\/\//,'').replace(/\/$/,'').split(':')[0];
+  // Crystal Ville has separate Java and Bedrock/Geyser ports.
+  const javaAddress=cleanHost+':25565';
+  const bedrockAddress=cleanHost+':19132';
+  const fetchStatus=async(type,address)=>{
+    const controller=new AbortController();
+    const timer=setTimeout(()=>controller.abort(),7000);
     try{
-      const r=await fetch(api,{cache:'no-store'});
-      if(!r.ok) continue;
+      const api='https://api.mcstatus.io/v2/status/'+type+'/'+encodeURIComponent(address);
+      const r=await fetch(api,{cache:'no-store',signal:controller.signal});
+      if(!r.ok) return {online:false};
       const d=await r.json();
-      const online=d.online===true || d.online_status===true;
-      if(online){
-        const onlinePlayers=d.players?.online ?? 0;
-        const maxPlayers=d.players?.max ?? 0;
-        $('status').textContent=`● ONLINE • ${onlinePlayers}/${maxPlayers} players`;
-        $('status').style.color='var(--cyan)';
-        return;
-      }
-    }catch(e){}
+      return {online:d?.online===true,data:d};
+    }catch(e){return {online:false};}
+    finally{clearTimeout(timer);}
+  };
+  const [java,bedrock]=await Promise.all([
+    fetchStatus('java',javaAddress),
+    fetchStatus('bedrock',bedrockAddress)
+  ]);
+  const javaOnline=java.online, bedrockOnline=bedrock.online;
+  if(javaOnline || bedrockOnline){
+    const source=javaOnline?java.data:bedrock.data;
+    const onlinePlayers=Number(source?.players?.online ?? 0);
+    const maxPlayers=Number(source?.players?.max ?? 0);
+    let label='ONLINE';
+    if(javaOnline && bedrockOnline) label='ONLINE • JAVA + BEDROCK';
+    else if(javaOnline) label='ONLINE • JAVA';
+    else label='ONLINE • BEDROCK';
+    $('status').textContent=`● ${label} • ${onlinePlayers}/${maxPlayers} players`;
+    $('status').style.color='var(--cyan)';
+  }else{
+    $('status').textContent='○ OFFLINE';
+    $('status').style.color='var(--danger)';
   }
-  $('status').textContent='○ OFFLINE';
-  $('status').style.color='var(--danger)';
 }
 checkServerStatus(ip);
  const [lr,nr,ar]=await Promise.all([sb.from('player_profiles').select('username,display_name,balance,rank').order('balance',{ascending:false}).limit(6),sb.from('cv_news').select('title,body,category,published_at').eq('enabled',true).order('published_at',{ascending:false}).limit(6),sb.from('cv_achievements').select('*').eq('enabled',true).order('sort_order')]);
