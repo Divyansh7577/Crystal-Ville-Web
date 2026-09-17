@@ -47,7 +47,7 @@
   </div>
 
   <div class="actions"><a class="btn ghost" href="#linktree">Explore Crystal Ville ↓</a></div>
-  <div class="server-card"><div><small>SERVER ADDRESS</small><strong id="serverIp">play.crystalville.net</strong><span id="status" style="display:block;color:var(--muted);font-size:11px;margin-top:5px">Checking server status…</span></div><button id="copyBtn">COPY IP</button></div>
+  <div class="server-card"><div><small>SERVER ADDRESS</small><strong id="serverIp">smp.playcrystalville.dpdns.org</strong><span id="status" style="display:block;color:var(--muted);font-size:11px;margin-top:5px">Checking server status…</span></div><button id="copyBtn">COPY IP</button></div>
 </section>
 
 <section id="linktree" class="section">
@@ -117,9 +117,32 @@ async function loadLinks(){
 }
 async function loadPublic(){
  let settings={};const sr=await sb.from('site_settings').select('value').eq('id','homepage').maybeSingle();if(sr.data?.value)settings=sr.data.value;
- const ip=settings.server_ip||'play.crystalville.net';$('serverIp').textContent=ip;if(settings.tagline)$('tagline').textContent=settings.tagline;
+ const ip=settings.server_ip||'smp.playcrystalville.dpdns.org';$('serverIp').textContent=ip;if(settings.tagline)$('tagline').textContent=settings.tagline;
  if(settings.map_url)$('mapbox').innerHTML=`<iframe loading="lazy" src="${esc(settings.map_url)}" title="Crystal Ville live map"></iframe>`;
- try{const r=await fetch('https://api.mcsrvstat.us/3/'+encodeURIComponent(ip));const d=await r.json();$('status').textContent=d.online?`● ONLINE • ${d.players?.online??0}/${d.players?.max??0} players`:'○ OFFLINE';$('status').style.color=d.online?'var(--cyan)':'var(--danger)'}catch(e){$('status').textContent='Status unavailable'}
+ async function checkServerStatus(host){
+  const apis=[
+    'https://api.mcstatus.io/v2/status/java/'+encodeURIComponent(host),
+    'https://api.mcsrvstat.us/3/'+encodeURIComponent(host)
+  ];
+  for(const api of apis){
+    try{
+      const r=await fetch(api,{cache:'no-store'});
+      if(!r.ok) continue;
+      const d=await r.json();
+      const online=d.online===true || d.online_status===true;
+      if(online){
+        const onlinePlayers=d.players?.online ?? 0;
+        const maxPlayers=d.players?.max ?? 0;
+        $('status').textContent=`● ONLINE • ${onlinePlayers}/${maxPlayers} players`;
+        $('status').style.color='var(--cyan)';
+        return;
+      }
+    }catch(e){}
+  }
+  $('status').textContent='○ OFFLINE';
+  $('status').style.color='var(--danger)';
+}
+checkServerStatus(ip);
  const [lr,nr,ar]=await Promise.all([sb.from('player_profiles').select('username,display_name,balance,rank').order('balance',{ascending:false}).limit(6),sb.from('cv_news').select('title,body,category,published_at').eq('enabled',true).order('published_at',{ascending:false}).limit(6),sb.from('cv_achievements').select('*').eq('enabled',true).order('sort_order')]);
  $('leaders').innerHTML=lr.data?.length?lr.data.map((x,i)=>`<article class="news-card"><span class="rarity">#${i+1} • ${esc(x.rank||'Player')}</span><h3>${esc(x.display_name||x.username)}</h3><p>💎 ${Number(x.balance||0).toLocaleString()} Crystals</p></article>`).join(''):'<div class="empty">No player data yet.</div>';
  const fallback=[{title:'Welcome to Crystal Ville',body:'The Amethyst Era begins. Build, trade and make your mark.',category:'News'}];
