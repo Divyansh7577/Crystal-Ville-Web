@@ -16,6 +16,7 @@
   <div class="navlinks">
     <a href="#linktree">Link Tree</a><a href="#events">Events</a><a href="#economy">Economy</a>
     <span id="navUser" class="navuser" hidden></span>
+    <a class="navbtn navadmin" href="admin.html">Admin</a>
     <button id="navLogin" class="navbtn navbutton">Login</button>
     <button id="navLogout" class="navbtn navbutton" hidden>Sign out</button>
   </div>
@@ -148,5 +149,21 @@ async function logout(){await sb.auth.signOut();location.hash='';window.scrollTo
 $('loginBtn').onclick=login;$('signupBtn').onclick=signup;$('navLogin').onclick=()=>{location.hash='';$('email').focus()};$('navLogout').onclick=logout;$('heroLogout').onclick=logout;
 $('copyBtn').onclick=async()=>{try{await navigator.clipboard.writeText($('serverIp').textContent)}catch(e){}$('copyBtn').textContent='COPIED ✓';setTimeout(()=>$('copyBtn').textContent='COPY IP',1400)};
 $('generate').onclick=async()=>{const n=$('mcname').value.trim();if(!/^[A-Za-z0-9_]{3,16}$/.test(n)){$('codebox').hidden=false;$('codebox').innerHTML='<p class="danger">Enter a valid Minecraft username.</p>';return}$('generate').disabled=true;$('generate').textContent='GENERATING…';try{const code=String(Math.floor(100000+Math.random()*900000));const r=await sb.from('player_accounts').upsert({user_id:user.id,minecraft_username:n,verification_code:code,verified:false},{onConflict:'user_id'}).select().single();if(r.error){showHubError('Could not create the Minecraft link.',r.error);return}account=r.data;profile=null;showCommand(code);renderProfile()}finally{$('generate').disabled=false;$('generate').textContent='GENERATE CODE'}};
+
+let liveTimer=null;
+async function refreshLiveHub(){
+  if(!user || !account?.verified || !account?.minecraft_username) return;
+  const r=await sb.from('player_profiles').select('*').eq('username',account.minecraft_username).maybeSingle();
+  if(!r.error && r.data){ profile=r.data; renderProfile(); }
+}
+function startLiveRefresh(){
+  if(liveTimer) clearInterval(liveTimer);
+  liveTimer=setInterval(async()=>{
+    await refreshLiveHub();
+    const [lr]=await Promise.all([sb.from('player_profiles').select('username,display_name,balance,rank').order('balance',{ascending:false}).limit(6)]);
+    if(lr.data) $('leaders').innerHTML=lr.data.length?lr.data.map((x,i)=>`<article class="news-card"><span class="rarity">#${i+1} • ${esc(x.rank||'Player')}</span><h3>${esc(x.display_name||x.username)}</h3><p>💎 ${Number(x.balance||0).toLocaleString()} Crystals</p></article>`).join(''):'<div class="empty">No player data yet.</div>';
+  },10000);
+}
+startLiveRefresh();
 boot();
 </script></body></html>
