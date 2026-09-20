@@ -8,7 +8,6 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Unbounded:wght@500;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
 <script src="config.js"></script><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <link rel="icon" href="favicon.ico" type="image/x-icon">
 </head>
 <body><div class="ambient a1"></div><div class="ambient a2"></div>
 
@@ -38,6 +37,8 @@
       <label>Password<input id="password" type="password" autocomplete="current-password" placeholder="••••••••"></label>
     </div>
     <div class="actions"><button class="btn primary" id="loginBtn">LOGIN</button><button class="btn ghost" id="signupBtn">CREATE ACCOUNT</button></div>
+    <div style="display:flex;align-items:center;gap:10px;margin:14px 0;color:var(--muted);font-size:12px"><span style="height:1px;flex:1;background:rgba(255,255,255,.12)"></span><span>OR</span><span style="height:1px;flex:1;background:rgba(255,255,255,.12)"></span></div>
+    <button class="btn ghost" id="discordBtn" style="width:100%;border-color:rgba(88,101,242,.55)">CONTINUE WITH DISCORD</button>
     <div id="authMsg" class="formmsg"></div>
   </div>
 
@@ -179,12 +180,13 @@ async function boot(){
  const s=await sb.auth.getSession();if(s.data.session)await onLogin(s.data.session);else showLoggedOut();
  sb.auth.onAuthStateChange((_event,session)=>{setTimeout(()=>session?onLogin(session):showLoggedOut(),0)});
 }
-async function onLogin(session){user=session.user;$('navLogin').hidden=true;$('navLogout').hidden=false;$('navUser').hidden=false;$('navUser').textContent=user.email||'Player';$('loginPanel').hidden=true;$('loggedPanel').hidden=false;$('loggedEmail').textContent='Signed in as '+(user.email||'Player');$('playerhub').hidden=false;await loadAccount()}
+async function onLogin(session){user=session.user;$('navLogin').hidden=true;$('navLogout').hidden=false;$('navUser').hidden=false;$('navUser').textContent=user.email||user.user_metadata?.global_name||user.user_metadata?.full_name||user.user_metadata?.name||'Player';$('loginPanel').hidden=true;$('loggedPanel').hidden=false;$('loggedEmail').textContent='Signed in as '+(user.email||user.user_metadata?.global_name||user.user_metadata?.full_name||user.user_metadata?.name||'Player');$('playerhub').hidden=false;await loadAccount()}
 function showLoggedOut(){user=null;account=null;profile=null;$('navLogin').hidden=false;$('navLogout').hidden=true;$('navUser').hidden=true;$('loggedPanel').hidden=true;$('loginPanel').hidden=false;$('playerhub').hidden=true}
 async function login(){const email=$('email').value.trim(),password=$('password').value;if(!email||!password){setMsg('Enter your email and password.',true);return}$('loginBtn').disabled=true;setMsg('Signing in…');const r=await sb.auth.signInWithPassword({email,password});if(r.error)setMsg(r.error.message,true);else setMsg('Login successful.');$('loginBtn').disabled=false}
+async function discordLogin(){const b=$('discordBtn');b.disabled=true;b.textContent='CONNECTING TO DISCORD…';const r=await sb.auth.signInWithOAuth({provider:'discord',options:{redirectTo:window.location.origin+window.location.pathname+'#playerhub'}});if(r.error){setMsg(r.error.message,true);b.disabled=false;b.textContent='CONTINUE WITH DISCORD'}}
 async function signup(){const email=$('email').value.trim(),password=$('password').value;if(!email||!password){setMsg('Enter your email and password.',true);return}if(password.length<6){setMsg('Password must be at least 6 characters.',true);return}$('signupBtn').disabled=true;setMsg('Creating account…');const r=await sb.auth.signUp({email,password});if(r.error)setMsg(r.error.message,true);else if(r.data.session)setMsg('Account created.');else setMsg('Account created. Check your email if confirmation is enabled.');$('signupBtn').disabled=false}
 async function logout(){await sb.auth.signOut();location.hash='';window.scrollTo(0,0)}
-$('loginBtn').onclick=login;$('signupBtn').onclick=signup;$('navLogin').onclick=()=>{location.hash='';$('email').focus()};$('navLogout').onclick=logout;$('heroLogout').onclick=logout;
+$('loginBtn').onclick=login;$('signupBtn').onclick=signup;$('discordBtn').onclick=discordLogin;$('navLogin').onclick=()=>{location.hash='';$('email').focus()};$('navLogout').onclick=logout;$('heroLogout').onclick=logout;
 $('copyBtn').onclick=async()=>{try{await navigator.clipboard.writeText($('serverIp').textContent)}catch(e){}$('copyBtn').textContent='COPIED ✓';setTimeout(()=>$('copyBtn').textContent='COPY IP',1400)};
 $('generate').onclick=async()=>{const n=$('mcname').value.trim();if(!/^[A-Za-z0-9_]{3,16}$/.test(n)){$('codebox').hidden=false;$('codebox').innerHTML='<p class="danger">Enter a valid Minecraft username.</p>';return}$('generate').disabled=true;$('generate').textContent='GENERATING…';try{const code=String(Math.floor(100000+Math.random()*900000));const r=await sb.from('player_accounts').upsert({user_id:user.id,minecraft_username:n,verification_code:code,verified:false},{onConflict:'user_id'}).select().single();if(r.error){showHubError('Could not create the Minecraft link.',r.error);return}account=r.data;profile=null;showCommand(code);renderProfile()}finally{$('generate').disabled=false;$('generate').textContent='GENERATE CODE'}};
 
