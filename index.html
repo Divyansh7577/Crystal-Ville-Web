@@ -2,52 +2,208 @@
 <html lang="en">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Crystal Ville — The Amethyst Survival Network</title>
-<meta name="description" content="Crystal Ville — a modern Minecraft survival network. Explore the economy, events, rules and community.">
+<title>Crystal Ville — Amethyst Survival Network</title>
+<meta name="description" content="Crystal Ville homepage, Player Hub, Link Tree, economy, achievements and events.">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Unbounded:wght@500;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
-<script src="config.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="config.js"></script><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
-<body>
-<div class="ambient a1"></div><div class="ambient a2"></div>
-<nav class="nav"><a class="brand" href="index.html"><span class="crystal">✦</span> CRYSTAL <b>VILLE</b></a>
-<div class="navlinks"><a href="#features">Explore</a><a href="links.html">Link Tree</a><a href="#community">Community</a><a href="auth.html" class="navbtn">Player Login</a><a class="navbtn" href="admin.html">Admin</a></div>
+<body><div class="ambient a1"></div><div class="ambient a2"></div>
+
+<nav class="nav">
+  <a class="brand" href="index.html"><span class="crystal">✦</span> CRYSTAL <b>VILLE</b></a>
+  <div class="navlinks">
+    <a href="#linktree">Link Tree</a><a href="#events">Events</a><a href="#economy">Economy</a>
+    <span id="navUser" class="navuser" hidden></span>
+    <a class="navbtn navadmin" href="admin.html">Admin</a>
+    <button id="navLogin" class="navbtn navbutton">Login</button>
+    <button id="navLogout" class="navbtn navbutton" hidden>Sign out</button>
+  </div>
 </nav>
+
 <main>
 <section class="hero">
-<div class="eyebrow"><span class="pulse"></span> SURVIVAL NETWORK • AMETHYST ERA</div>
-<h1>Build your <span>legacy.</span><br>Own the crystal.</h1>
-<p class="lead">A fresh survival world built around community, economy and events — with Crystal Ville's purple identity at the heart of it.</p>
-<div class="actions"><a class="btn primary" href="#join">Play Crystal Ville <span>→</span></a><a class="btn ghost" href="links.html">Explore Link Tree</a></div>
-<div class="server-card"><div><small>SERVER ADDRESS</small><strong id="serverIp">play.crystalville.net</strong></div><button id="copyBtn">COPY IP</button></div>
+  <div class="eyebrow"><span class="pulse"></span> SURVIVAL NETWORK • AMETHYST ERA</div>
+  <h1>Your server.<br>Your <span>legacy.</span></h1>
+  <p id="tagline" class="lead">Crystal Ville is more than a Minecraft server — it is a living world with its own economy, achievements, events and community.</p>
+
+  <div id="loginPanel" class="glass loginpanel">
+    <div class="mini">PLAYER ACCOUNT</div>
+    <h2>Enter Crystal Ville</h2>
+    <p>Login once on this device. Your session is saved by your browser, so you can return to the site without signing in again until you sign out or the session expires.</p>
+    <div class="formgrid compact">
+      <label>Email<input id="email" type="email" autocomplete="email" placeholder="you@example.com"></label>
+      <label>Password<input id="password" type="password" autocomplete="current-password" placeholder="••••••••"></label>
+    </div>
+    <div class="actions"><button class="btn primary" id="loginBtn">LOGIN</button><button class="btn ghost" id="signupBtn">CREATE ACCOUNT</button></div>
+    <div style="display:flex;align-items:center;gap:10px;margin:14px 0;color:var(--muted);font-size:12px"><span style="height:1px;flex:1;background:rgba(255,255,255,.12)"></span><span>OR</span><span style="height:1px;flex:1;background:rgba(255,255,255,.12)"></span></div>
+    <button class="btn ghost" id="discordBtn" style="width:100%;border-color:rgba(88,101,242,.55)">CONTINUE WITH DISCORD</button>
+    <div id="authMsg" class="formmsg"></div>
+  </div>
+
+  <div id="loggedPanel" class="glass loggedpanel" hidden>
+    <div class="mini">WELCOME BACK</div><h2 id="loggedTitle">Player Hub unlocked.</h2>
+    <p id="loggedEmail"></p>
+    <div class="actions"><a class="btn primary" href="#playerhub">Open Player Hub ↓</a><button class="btn ghost" id="heroLogout">Sign out</button></div>
+  </div>
+
+  <div class="actions"><a class="btn ghost" href="#linktree">Explore Crystal Ville ↓</a></div>
+  <div class="server-card"><div><small>SERVER ADDRESS</small><strong id="serverIp">smp.playcrystalville.dpdns.org</strong><span id="status" style="display:block;color:var(--muted);font-size:11px;margin-top:5px">Checking server status…</span></div><button id="copyBtn">COPY IP</button></div>
 </section>
 
-<section id="features" class="section">
-<div class="section-head"><span>01</span><div><h2>Explore the Ville</h2><p>Everything you need, one crystal away.</p></div></div>
-<div id="linkGrid" class="grid"></div>
+<section id="linktree" class="section">
+  <div class="section-head"><span>01</span><div><h2>Link <span>Tree</span></h2><p>Everything Crystal Ville in one place.</p></div></div>
+  <div id="linkGrid" class="grid"><div class="empty">Loading links…</div></div>
 </section>
 
-<section id="community" class="split">
-<div class="glass big"><div class="mini">THE COMMUNITY</div><h2>More than a server.</h2><p>Trade, build, compete and make your mark. Crystal Ville is designed to keep the world moving with player-driven systems and regular events.</p><a class="textlink" href="links.html">Open the full Link Tree →</a></div>
-<div class="stats"><div><b>∞</b><span>Stories to create</span></div><div><b>◆</b><span>Amethyst identity</span></div><div><b>24/7</b><span>World to explore</span></div></div>
+<section id="playerhub" class="section protected-section" hidden>
+  <div class="section-head"><span>02</span><div><h2>Player <span>Hub</span></h2><p>Your account, Minecraft link and live server profile.</p></div></div>
+
+  <div id="hubError" class="glass errorbox" hidden></div>
+
+  <div id="connect" class="glass" hidden>
+    <div class="mini">MINECRAFT LINK</div>
+    <h2>Connect your Minecraft account</h2>
+    <p>Enter the exact Minecraft username you play with. Generate a one-time code, join Crystal Ville, then run the command shown below.</p>
+    <div class="searchbox"><input id="mcname" maxlength="16" placeholder="Minecraft username" autocomplete="off"><button id="generate">GENERATE CODE</button></div>
+    <div id="codebox" class="commandbox" hidden></div>
+  </div>
+
+  <div id="profileArea" style="margin-top:18px"><div class="empty">Loading your Player Hub…</div></div>
 </section>
 
-<section id="join" class="join glass"><div><div class="mini">READY?</div><h2>Enter Crystal Ville.</h2><p>Copy the server address, join the community and start your next chapter.</p></div><div class="joinbox"><code id="serverIp2">play.crystalville.net</code><button id="copyBtn2">Copy</button></div></section>
+<section id="economy" class="section">
+  <div class="section-head"><span>03</span><div><h2>Economy <span>Board</span></h2><p>Live Crystal balances from the server database.</p></div></div>
+  <div id="leaders" class="newsgrid"><div class="empty">Loading leaderboard…</div></div>
+</section>
+
+<section id="events" class="section">
+  <div class="section-head"><span>04</span><div><h2>News & <span>Events</span></h2><p>Admin-posted Crystal Ville updates.</p></div></div>
+  <div id="news" class="newsgrid"><div class="empty">Loading news…</div></div>
+</section>
+
+<section id="achievements" class="section">
+  <div class="section-head"><span>05</span><div><h2>Achievements</h2><p>Milestones players can unlock.</p></div></div>
+  <div id="achievementsGrid" class="achgrid"><div class="empty">Loading achievements…</div></div>
+</section>
+
+<section id="map" class="section">
+  <div class="section-head"><span>06</span><div><h2>World <span>Map</span></h2><p>Connect a BlueMap/Dynmap URL from the Admin Panel.</p></div></div>
+  <div id="mapbox" class="mapbox"><div class="empty">Live map is not configured yet.</div></div>
+</section>
 </main>
+
 <footer><span>© 2026 Crystal Ville</span><span>Crafted in the Amethyst Era.</span></footer>
+
 <script>
-const fallback=[["Our Economy","#economy","◆","Trade, prices and the player economy."],["Events","#events","✦","Upcoming competitions and community events."],["Rules","#rules","◇","Read the rules before you play."],["Store","#store","◈","Support the network and browse the store."],["Discord","#discord","◎","Join the Crystal Ville community."]];
-let sb=null;
-try{ if(window.CV_SUPABASE_URL&&window.CV_SUPABASE_KEY) sb=supabase.createClient(CV_SUPABASE_URL,CV_SUPABASE_KEY); }catch(e){}
-async function load(){
- let items=fallback;
- if(sb){const {data}=await sb.from("website_links").select("title,url,icon,description").eq("enabled",true).order("sort_order"); if(data&&data.length)items=data.map(x=>[x.title,x.url,x.icon||"✦",x.description||""]);}
- document.querySelector("#linkGrid").innerHTML=items.map(x=>`<a class="tile" href="${esc(x[1])}"><span class="tileicon">${esc(x[2])}</span><div><b>${esc(x[0])}</b><p>${esc(x[3])}</p></div><span class="arrow">↗</span></a>`).join("");
+'use strict';
+const $=id=>document.getElementById(id);
+const esc=s=>String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+const sb=supabase.createClient(CV_SUPABASE_URL,CV_SUPABASE_KEY,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true,storageKey:'crystal-ville-auth'}});
+let user=null,account=null,profile=null;
+
+function setMsg(text,error=false){$('authMsg').textContent=text||'';$('authMsg').style.color=error?'var(--danger)':'var(--muted)'}
+function showHubError(title,error){$('hubError').hidden=false;$('hubError').innerHTML='<b>'+esc(title)+'</b><p>'+esc(error?.message||error||'Unknown error')+'</p>'}
+function formatPlaytime(mins){const m=Number(mins||0),h=Math.floor(m/60),mm=m%60;return h+'h '+mm+'m'}
+function renderProfile(){
+ if(!profile){$('profileArea').innerHTML=account?.verified?'<div class="empty">Your Minecraft account is linked, but no server profile has been synced yet. Join the server and wait for the next sync.</div>':'<div class="empty">Connect Minecraft above to unlock your personal stats.</div>';return}
+ const x=profile,k=Number(x.kills||0),d=Number(x.deaths||0),kd=d?(k/d).toFixed(2):k.toFixed(2);
+ $('profileArea').innerHTML=`<section class="glass"><div class="profiletop"><div><div class="mini">${esc(x.rank||'Player')}</div><h2>${esc(x.display_name||x.username)}</h2><p>@${esc(x.username)} • ${account?.verified?'Verified ✓':'Pending'}</p></div><div class="profilegem">💎</div></div><div class="cards"><div class="statcard"><small>CRYSTALS</small><strong>${Number(x.balance||0).toLocaleString()}</strong></div><div class="statcard"><small>PLAYTIME</small><strong>${formatPlaytime(x.playtime_minutes)}</strong></div><div class="statcard"><small>K/D</small><strong>${kd}</strong></div><div class="statcard"><small>BLOCKS</small><strong>${Number(x.blocks_broken||0).toLocaleString()}</strong></div></div><div class="hubmini"><span>⚔ ${k} kills</span><span>☠ ${d} deaths</span><span>Rank: ${esc(x.rank||'Player')}</span></div></section>`;
 }
-function esc(s){return String(s??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]));}
-async function copy(){await navigator.clipboard?.writeText(document.querySelector("#serverIp").textContent); document.querySelectorAll("#copyBtn,#copyBtn2").forEach(b=>{b.textContent="COPIED ✓";setTimeout(()=>b.textContent=b.id==="copyBtn"?"COPY IP":"Copy",1300)})}
-document.querySelector("#copyBtn").onclick=copy;document.querySelector("#copyBtn2").onclick=copy;load();
-</script>
-</body></html>
+async function loadLinks(){
+ const r=await sb.from('website_links').select('title,url,icon,description').eq('enabled',true).order('sort_order');
+ const base=[{title:'Player Hub',url:'#playerhub',icon:'◈',description:'Your Minecraft profile, stats and linking.'}];
+ const data=[...base,...(r.data||[]).filter(x=>x.title?.toLowerCase()!=='player hub'&&x.title?.toLowerCase()!=='store')];
+ $('linkGrid').innerHTML=data.length?data.map(x=>`<a class="tile" href="${esc(x.url)}"><span class="tileicon">${esc(x.icon||'✦')}</span><div><b>${esc(x.title)}</b><p>${esc(x.description||'Open destination')}</p></div><span class="arrow">↗</span></a>`).join(''):'<div class="empty">No links configured yet.</div>';
+}
+async function loadPublic(){
+ let settings={};const sr=await sb.from('site_settings').select('value').eq('id','homepage').maybeSingle();if(sr.data?.value)settings=sr.data.value;
+ const ip=settings.server_ip||'smp.playcrystalville.dpdns.org';$('serverIp').textContent=ip;if(settings.tagline)$('tagline').textContent=settings.tagline;
+ if(settings.map_url)$('mapbox').innerHTML=`<iframe loading="lazy" src="${esc(settings.map_url)}" title="Crystal Ville live map"></iframe>`;
+ async function checkServerStatus(host){
+  const cleanHost=String(host||'smp.playcrystalville.dpdns.org').trim().replace(/^https?:\/\//,'').replace(/\/$/,'').split(':')[0];
+  // Crystal Ville has separate Java and Bedrock/Geyser ports.
+  const javaAddress=cleanHost+':25565';
+  const bedrockAddress=cleanHost+':19132';
+  const fetchStatus=async(type,address)=>{
+    const controller=new AbortController();
+    const timer=setTimeout(()=>controller.abort(),7000);
+    try{
+      const api='https://api.mcstatus.io/v2/status/'+type+'/'+encodeURIComponent(address);
+      const r=await fetch(api,{cache:'no-store',signal:controller.signal});
+      if(!r.ok) return {online:false};
+      const d=await r.json();
+      return {online:d?.online===true,data:d};
+    }catch(e){return {online:false};}
+    finally{clearTimeout(timer);}
+  };
+  const [java,bedrock]=await Promise.all([
+    fetchStatus('java',javaAddress),
+    fetchStatus('bedrock',bedrockAddress)
+  ]);
+  const javaOnline=java.online, bedrockOnline=bedrock.online;
+  if(javaOnline || bedrockOnline){
+    const source=javaOnline?java.data:bedrock.data;
+    const onlinePlayers=Number(source?.players?.online ?? 0);
+    const maxPlayers=Number(source?.players?.max ?? 0);
+    let label='ONLINE';
+    if(javaOnline && bedrockOnline) label='ONLINE • JAVA + BEDROCK';
+    else if(javaOnline) label='ONLINE • JAVA';
+    else label='ONLINE • BEDROCK';
+    $('status').textContent=`● ${label} • ${onlinePlayers}/${maxPlayers} players`;
+    $('status').style.color='var(--cyan)';
+  }else{
+    $('status').textContent='○ OFFLINE';
+    $('status').style.color='var(--danger)';
+  }
+}
+checkServerStatus(ip);
+ const [lr,nr,ar]=await Promise.all([sb.from('player_profiles').select('username,display_name,balance,rank').order('balance',{ascending:false}).limit(6),sb.from('cv_news').select('title,body,category,published_at').eq('enabled',true).order('published_at',{ascending:false}).limit(6),sb.from('cv_achievements').select('*').eq('enabled',true).order('sort_order')]);
+ $('leaders').innerHTML=lr.data?.length?lr.data.map((x,i)=>`<article class="news-card"><span class="rarity">#${i+1} • ${esc(x.rank||'Player')}</span><h3>${esc(x.display_name||x.username)}</h3><p>💎 ${Number(x.balance||0).toLocaleString()} Crystals</p></article>`).join(''):'<div class="empty">No player data yet.</div>';
+ const fallback=[{title:'Welcome to Crystal Ville',body:'The Amethyst Era begins. Build, trade and make your mark.',category:'News'}];
+ $('news').innerHTML=nr.data?.length?nr.data.map(x=>`<article class="news-card"><span class="rarity">${esc(x.category)}</span><h3>${esc(x.title)}</h3><p>${esc(x.body)}</p></article>`).join(''):fallback.map(x=>`<article class="news-card"><span class="rarity">${x.category}</span><h3>${x.title}</h3><p>${x.body}</p></article>`).join('');
+ $('achievementsGrid').innerHTML=ar.data?.length?ar.data.map(x=>`<article class="ach"><div style="font-size:28px">${esc(x.icon||'✦')}</div><span class="rarity">${esc(x.rarity||'COMMON')}</span><h3>${esc(x.title)}</h3><p>${esc(x.description)}</p></article>`).join(''):'<div class="empty">No achievements configured.</div>';
+}
+async function loadAccount(){
+ const r=await sb.from('player_accounts').select('user_id,minecraft_username,verification_code,verified,created_at,updated_at').eq('user_id',user.id).maybeSingle();
+ if(r.error){showHubError('Could not load your Player Hub account.',r.error);$('connect').hidden=false;return}
+ account=r.data;
+ if(!account){$('connect').hidden=false;$('profileArea').innerHTML='<div class="empty">Connect Minecraft above to unlock your personal stats.</div>';return}
+ if(account.minecraft_username){const p=await sb.from('player_profiles').select('*').eq('username',account.minecraft_username).maybeSingle();if(p.error)showHubError('Could not load your Minecraft profile.',p.error);else profile=p.data}
+ if(!account.verified){$('connect').hidden=false;$('mcname').value=account.minecraft_username||'';showCommand(account.verification_code)}else{$('connect').hidden=true;$('codebox').hidden=true}
+ renderProfile();
+}
+function showCommand(code){if(!code)return;$('codebox').hidden=false;$('codebox').innerHTML=`<div class="commandline"><code id="cvCommand">/cvlink ${esc(code)}</code><button id="copyCommand">COPY</button></div><p>Join the Minecraft server and run this command once.</p>`;$('copyCommand').onclick=async()=>{const text='/cvlink '+code;try{await navigator.clipboard.writeText(text);$('copyCommand').textContent='COPIED ✓';setTimeout(()=>$('copyCommand').textContent='COPY',1500)}catch(e){$('copyCommand').textContent='SELECT & COPY'}}}
+async function boot(){
+ await loadPublic();await loadLinks();
+ const s=await sb.auth.getSession();if(s.data.session)await onLogin(s.data.session);else showLoggedOut();
+ sb.auth.onAuthStateChange((_event,session)=>{setTimeout(()=>session?onLogin(session):showLoggedOut(),0)});
+}
+async function onLogin(session){user=session.user;$('navLogin').hidden=true;$('navLogout').hidden=false;$('navUser').hidden=false;$('navUser').textContent=user.email||user.user_metadata?.global_name||user.user_metadata?.full_name||user.user_metadata?.name||'Player';$('loginPanel').hidden=true;$('loggedPanel').hidden=false;$('loggedEmail').textContent='Signed in as '+(user.email||user.user_metadata?.global_name||user.user_metadata?.full_name||user.user_metadata?.name||'Player');$('playerhub').hidden=false;await loadAccount()}
+function showLoggedOut(){user=null;account=null;profile=null;$('navLogin').hidden=false;$('navLogout').hidden=true;$('navUser').hidden=true;$('loggedPanel').hidden=true;$('loginPanel').hidden=false;$('playerhub').hidden=true}
+async function login(){const email=$('email').value.trim(),password=$('password').value;if(!email||!password){setMsg('Enter your email and password.',true);return}$('loginBtn').disabled=true;setMsg('Signing in…');const r=await sb.auth.signInWithPassword({email,password});if(r.error)setMsg(r.error.message,true);else setMsg('Login successful.');$('loginBtn').disabled=false}
+async function discordLogin(){const b=$('discordBtn');b.disabled=true;b.textContent='CONNECTING TO DISCORD…';const r=await sb.auth.signInWithOAuth({provider:'discord',options:{redirectTo:'https://playcrystalville.dpdns.org/auth.html',scopes:'identify email'}});if(r.error){setMsg(r.error.message,true);b.disabled=false;b.textContent='CONTINUE WITH DISCORD'}}
+async function signup(){const email=$('email').value.trim(),password=$('password').value;if(!email||!password){setMsg('Enter your email and password.',true);return}if(password.length<6){setMsg('Password must be at least 6 characters.',true);return}$('signupBtn').disabled=true;setMsg('Creating account…');const r=await sb.auth.signUp({email,password});if(r.error)setMsg(r.error.message,true);else if(r.data.session)setMsg('Account created.');else setMsg('Account created. Check your email if confirmation is enabled.');$('signupBtn').disabled=false}
+async function logout(){await sb.auth.signOut();location.hash='';window.scrollTo(0,0)}
+$('loginBtn').onclick=login;$('signupBtn').onclick=signup;$('discordBtn').onclick=discordLogin;$('navLogin').onclick=()=>{location.hash='';$('email').focus()};$('navLogout').onclick=logout;$('heroLogout').onclick=logout;
+$('copyBtn').onclick=async()=>{try{await navigator.clipboard.writeText($('serverIp').textContent)}catch(e){}$('copyBtn').textContent='COPIED ✓';setTimeout(()=>$('copyBtn').textContent='COPY IP',1400)};
+$('generate').onclick=async()=>{const n=$('mcname').value.trim();if(!/^[A-Za-z0-9_]{3,16}$/.test(n)){$('codebox').hidden=false;$('codebox').innerHTML='<p class="danger">Enter a valid Minecraft username.</p>';return}$('generate').disabled=true;$('generate').textContent='GENERATING…';try{const code=String(Math.floor(100000+Math.random()*900000));const r=await sb.from('player_accounts').upsert({user_id:user.id,minecraft_username:n,verification_code:code,verified:false},{onConflict:'user_id'}).select().single();if(r.error){showHubError('Could not create the Minecraft link.',r.error);return}account=r.data;profile=null;showCommand(code);renderProfile()}finally{$('generate').disabled=false;$('generate').textContent='GENERATE CODE'}};
+
+let liveTimer=null;
+async function refreshLiveHub(){
+  if(!user || !account?.verified || !account?.minecraft_username) return;
+  const r=await sb.from('player_profiles').select('*').eq('username',account.minecraft_username).maybeSingle();
+  if(!r.error && r.data){ profile=r.data; renderProfile(); }
+}
+function startLiveRefresh(){
+  if(liveTimer) clearInterval(liveTimer);
+  liveTimer=setInterval(async()=>{
+    await refreshLiveHub();
+    const [lr]=await Promise.all([sb.from('player_profiles').select('username,display_name,balance,rank').order('balance',{ascending:false}).limit(6)]);
+    if(lr.data) $('leaders').innerHTML=lr.data.length?lr.data.map((x,i)=>`<article class="news-card"><span class="rarity">#${i+1} • ${esc(x.rank||'Player')}</span><h3>${esc(x.display_name||x.username)}</h3><p>💎 ${Number(x.balance||0).toLocaleString()} Crystals</p></article>`).join(''):'<div class="empty">No player data yet.</div>';
+  },10000);
+}
+startLiveRefresh();
+boot();
+</script></body></html>

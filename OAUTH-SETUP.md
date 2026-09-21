@@ -1,10 +1,11 @@
-# Crystal Ville OAuth Setup
+# Crystal Ville Discord OAuth Setup
 
-Production website:
+The website files/design are preserved. OAuth changes are limited to the authentication flow.
+
+## Production website
 https://playcrystalville.dpdns.org
 
-## 1. Supabase
-
+## Supabase
 Authentication -> URL Configuration:
 
 Site URL:
@@ -13,24 +14,20 @@ https://playcrystalville.dpdns.org
 Redirect URL:
 https://playcrystalville.dpdns.org/auth.html
 
-## 2. Enable Discord
-
-Supabase -> Authentication -> Sign In / Providers -> Discord.
-
-Enter the Discord OAuth Client ID and Client Secret from your Discord Developer Portal application.
-
-## 3. Discord Developer Portal
-
-Discord Developer Portal -> Your Application -> OAuth2 -> Redirects:
+## Discord Developer Portal
+OAuth2 -> Redirects:
 
 https://sulaflsevtrsnztchsbm.supabase.co/auth/v1/callback
 
-Do NOT put the Discord Client Secret in any website file.
+## Supabase Discord Provider
+Authentication -> Sign In / Providers -> Discord:
+- Enable Discord
+- Enter the Discord Client ID
+- Enter the Discord Client Secret
 
-## 4. Deploy
+Do not put the Discord Client Secret in any HTML/JS file.
 
-Upload all files in this ZIP to the Cloudflare-hosted website. Keep auth.html at the site root so this exact URL works:
-https://playcrystalville.dpdns.org/auth.html
-
-The included auth.html uses Supabase PKCE OAuth and redirects successful sessions to:
-https://playcrystalville.dpdns.org/index.html#playerhub
+## What was changed
+- auth.html: Discord OAuth now redirects to the real production auth.html URL and uses PKCE.
+- index.html: the existing Discord button now starts the same OAuth flow and returns through auth.html.
+- Existing website pages, styling, admin panel, links, dashboard, assets, and configuration were preserved.

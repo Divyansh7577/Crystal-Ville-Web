@@ -1,45 +1,83 @@
-<!doctype html>
-<html lang="en">
-<head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Crystal Ville — Login</title>
-<meta name="theme-color" content="#9d6bff">
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<link rel="stylesheet" href="style.css">
-<style>
-.auth-wrap{min-height:calc(100vh - 90px);display:grid;place-items:center;padding:32px 18px}.auth-card{width:min(440px,100%);padding:30px;border:1px solid rgba(157,107,255,.28);border-radius:24px;background:rgba(25,18,43,.82);backdrop-filter:blur(20px);box-shadow:0 30px 90px rgba(0,0,0,.4)}.auth-card h1{margin:0 0 8px}.muted{color:#bdb3d6;line-height:1.5}.field{margin:14px 0}.field label{display:block;margin-bottom:7px;color:#bdb3d6;font-size:13px;font-weight:700}.field input{width:100%;padding:13px;border-radius:12px;border:1px solid #34294f;background:#120f1f;color:#f5f1fb;outline:none}.field input:focus{border-color:#9d6bff;box-shadow:0 0 0 3px rgba(157,107,255,.12)}.auth-card button{width:100%;padding:13px;margin-top:10px;border:0;border-radius:12px;font-weight:800;cursor:pointer}.primary{background:linear-gradient(135deg,#9d6bff,#7245d6);color:#fff}.discord{background:#5865f2;color:#fff}.secondary{background:#251b3d;color:#fff;border:1px solid #34294f!important}.divider{display:flex;gap:10px;align-items:center;margin:18px 0;color:#bdb3d6;font-size:12px}.divider:before,.divider:after{content:"";height:1px;background:#34294f;flex:1}.msg{display:none;margin-top:15px;padding:12px;border-radius:11px;font-size:13px}.msg.show{display:block}.error{background:rgba(255,143,163,.1);color:#ffd9df;border:1px solid rgba(255,143,163,.22)}.success{background:rgba(112,241,189,.08);color:#d9ffef;border:1px solid rgba(112,241,189,.2)}
-</style>
-</head>
-<body>
-<div class="ambient a1"></div><div class="ambient a2"></div>
-<nav class="nav"><a class="brand" href="index.html"><span class="crystal">✦</span> CRYSTAL <b>VILLE</b></a><div class="navlinks"><a href="index.html">Home</a><a href="links.html">Link Tree</a></div></nav>
-<main class="auth-wrap"><section class="auth-card">
-<div class="mini">PLAYER HUB</div><h1>Welcome to Crystal Ville</h1><p class="muted">Sign in to access your Crystal Ville account.</p>
-<button id="discordBtn" class="discord">Continue with Discord</button>
-<div class="divider">OR</div>
-<div class="field"><label for="email">Email</label><input id="email" type="email" autocomplete="email" placeholder="you@example.com"></div>
-<div class="field"><label for="password">Password</label><input id="password" type="password" autocomplete="current-password" placeholder="••••••••"></div>
-<button id="loginBtn" class="primary">Sign In</button><button id="signupBtn" class="secondary">Create Account</button>
-<div id="msg" class="msg"></div>
-</section></main>
-<script>
-const SUPABASE_URL='https://sulaflsevtrsnztchsbm.supabase.co';
-const SUPABASE_KEY='sb_publishable_E7I0b1L5NswrwIfcw4_vlQ_7obV2Z-c';
-const PRODUCTION_ORIGIN='https://playcrystalville.dpdns.org';
-const sb=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true,flowType:'pkce'}});
-const $=id=>document.getElementById(id);const msg=$('msg');
-function show(t,type='error'){msg.textContent=t;msg.className='msg show '+type}
-function clear(){msg.textContent='';msg.className='msg'}
-function redirect(){window.location.replace(PRODUCTION_ORIGIN+'/index.html#playerhub')}
-function redirectUrl(){return PRODUCTION_ORIGIN+'/auth.html'}
-async function boot(){
- const p=new URLSearchParams(location.search);const err=p.get('error_description')||p.get('error');if(err){show(decodeURIComponent(err.replace(/\+/g,' ')));history.replaceState({},document.title,location.pathname)}
- const {data,error}=await sb.auth.getSession();if(!error&&data.session)redirect();
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Crystal Ville — Login</title><link rel="stylesheet" href="style.css"><script src="config.js"></script><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script></head><body><nav class="nav"><a class="brand" href="index.html"><span class="crystal">✦</span> CRYSTAL <b>VILLE</b></a><div class="navlinks"><a href="index.html">Home</a></div></nav><main class="adminwrap"><section class="auth glass"><div class="mini">PLAYER ACCOUNT</div><h1 style="font:700 34px Unbounded">Enter the <span style="color:var(--am)">Hub.</span></h1><p style="color:var(--muted)">Login or create your Crystal Ville account. Your browser keeps the session saved on this device.</p><input id="email" type="email" autocomplete="email" placeholder="Email"><input id="pass" type="password" autocomplete="current-password" placeholder="Password"><div class="actions"><button class="btn primary" id="login">Sign in</button><button class="btn ghost" id="signup">Create account</button></div><div style="display:flex;align-items:center;gap:10px;margin:14px 0;color:var(--muted);font-size:12px"><span style="height:1px;flex:1;background:rgba(255,255,255,.12)"></span><span>OR</span><span style="height:1px;flex:1;background:rgba(255,255,255,.12)"></span></div><button class="btn ghost" id="discord" style="width:100%;border-color:rgba(88,101,242,.55)">CONTINUE WITH DISCORD</button><div id="msg" style="margin-top:14px;color:var(--muted)"></div></section></main><script>
+const sb=supabase.createClient(CV_SUPABASE_URL,CV_SUPABASE_KEY,{
+  auth:{
+    persistSession:true,
+    autoRefreshToken:true,
+    detectSessionInUrl:true,
+    flowType:'pkce',
+    storageKey:'crystal-ville-auth'
+  }
+}),$=id=>document.getElementById(id);
+
+const PROD_ORIGIN='https://playcrystalville.dpdns.org';
+const AUTH_REDIRECT=PROD_ORIGIN+'/auth.html';
+
+function playerHub(){
+  window.location.replace(PROD_ORIGIN+'/index.html#playerhub');
 }
-sb.auth.onAuthStateChange((event,session)=>{if(session&&(event==='SIGNED_IN'||event==='INITIAL_SESSION'))redirect()});
-$('discordBtn').onclick=async()=>{clear();const b=$('discordBtn');b.disabled=true;b.textContent='Connecting to Discord…';try{const {error}=await sb.auth.signInWithOAuth({provider:'discord',options:{redirectTo:redirectUrl(),scopes:'identify email'}});if(error)throw error}catch(e){console.error(e);show(e.message||'Discord login failed.');b.disabled=false;b.textContent='Continue with Discord'}};
-$('loginBtn').onclick=async()=>{clear();const email=$('email').value.trim(),password=$('password').value;if(!email||!password)return show('Enter your email and password.');const b=$('loginBtn');b.disabled=true;b.textContent='Signing in…';try{const {data,error}=await sb.auth.signInWithPassword({email,password});if(error)throw error;if(data.session)redirect()}catch(e){show(e.message||'Login failed.');b.disabled=false;b.textContent='Sign In'}};
-$('signupBtn').onclick=async()=>{clear();const email=$('email').value.trim(),password=$('password').value;if(!email||!password)return show('Enter an email and password.');if(password.length<6)return show('Password must contain at least 6 characters.');const b=$('signupBtn');b.disabled=true;b.textContent='Creating account…';try{const {data,error}=await sb.auth.signUp({email,password});if(error)throw error;if(data.session)redirect();else show('Account created. Check your email to confirm your account.','success')}catch(e){show(e.message||'Signup failed.')}finally{b.disabled=false;b.textContent='Create Account'}};
+
+function showError(){
+  const p=new URLSearchParams(window.location.search);
+  const err=p.get('error_description')||p.get('error');
+  if(err){
+    $('msg').textContent=decodeURIComponent(err.replace(/\+/g,' '));
+    window.history.replaceState({},document.title,window.location.pathname);
+  }
+}
+
+async function boot(){
+  showError();
+  const s=await sb.auth.getSession();
+  if(s.data.session) playerHub();
+}
+
+$('login').onclick=async()=>{
+  const email=$('email').value.trim(),password=$('pass').value;
+  $('msg').textContent='Signing in…';
+  const r=await sb.auth.signInWithPassword({email,password});
+  if(r.error)$('msg').textContent=r.error.message;
+  else playerHub();
+};
+
+$('signup').onclick=async()=>{
+  const email=$('email').value.trim(),password=$('pass').value;
+  if(password.length<6){
+    $('msg').textContent='Password must be at least 6 characters.';
+    return;
+  }
+  $('msg').textContent='Creating account…';
+  const r=await sb.auth.signUp({email,password});
+  if(r.error)$('msg').textContent=r.error.message;
+  else if(r.data.session)playerHub();
+  else $('msg').textContent='Account created. Check your email if confirmation is enabled, then sign in.';
+};
+
+$('discord').onclick=async()=>{
+  const b=$('discord');
+  b.disabled=true;
+  b.textContent='CONNECTING TO DISCORD…';
+  $('msg').textContent='';
+
+  const r=await sb.auth.signInWithOAuth({
+    provider:'discord',
+    options:{
+      redirectTo:AUTH_REDIRECT,
+      scopes:'identify email'
+    }
+  });
+
+  if(r.error){
+    $('msg').textContent=r.error.message;
+    b.disabled=false;
+    b.textContent='CONTINUE WITH DISCORD';
+  }
+};
+
+sb.auth.onAuthStateChange((event,session)=>{
+  if(session && (event==='SIGNED_IN'||event==='INITIAL_SESSION')){
+    if(window.location.pathname.toLowerCase().endsWith('auth.html')) playerHub();
+  }
+});
+
 boot();
-</script>
-</body></html>
+</script></body></html>
